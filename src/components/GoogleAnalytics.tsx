@@ -36,7 +36,7 @@ export default function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps)
             page_location: window.location.href,
             page_path: window.location.pathname,
             send_page_view: true,
-            cookie_flags: 'SameSite=None;Secure'
+            cookie_flags: 'SameSite=Lax;Secure;HttpOnly'
           });
 
           // Track page views on route change.

@@ -18,7 +18,9 @@ export interface BlogPost {
 export function getAllBlogSlugs(): string[] {
   // Guardrail: Check if directory exists.
   if (!fs.existsSync(BLOG_DIR)) {
-    console.warn("Blog directory does not exist.");
+    if (process.env.NODE_ENV === "development") {
+      console.warn("Blog directory does not exist.");
+    }
     return [];
   }
 
@@ -39,11 +41,22 @@ export function getBlogPost(slug: string): BlogPost | null {
   // Guardrail: Sanitize slug to prevent path traversal.
   const sanitizedSlug = slug.replace(/[^a-z0-9-]/gi, "");
 
-  const filePath = path.join(BLOG_DIR, `${sanitizedSlug}.md`);
+  const filePath = path.resolve(BLOG_DIR, `${sanitizedSlug}.md`);
+  const resolvedBlogDir = path.resolve(BLOG_DIR);
+
+  // Guardrail: Verify path is within BLOG_DIR to prevent path traversal.
+  if (!filePath.startsWith(resolvedBlogDir)) {
+    if (process.env.NODE_ENV === "development") {
+      console.warn("Path traversal attempt detected.");
+    }
+    return null;
+  }
 
   // Guardrail: Check if file exists.
   if (!fs.existsSync(filePath)) {
-    console.warn(`Blog post not found: ${sanitizedSlug}`);
+    if (process.env.NODE_ENV === "development") {
+      console.warn(`Blog post not found: ${sanitizedSlug}`);
+    }
     return null;
   }
 

@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+
+const inter = Inter({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ngek.tech"),
@@ -54,25 +62,7 @@ export default function RootLayout({
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "";
 
   return (
-    <html lang="en">
-      <head>
-        {/* Google Sans Font */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap"
-          rel="stylesheet"
-        />
-        {/* Fallback to Product Sans which is similar */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="en" className={inter.variable}>
       <body className="antialiased">
         {/* Google Analytics IP Tracking */}
         <GoogleAnalytics measurementId={gaMeasurementId} />

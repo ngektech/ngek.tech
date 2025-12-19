@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import DOMPurify from "dompurify";
 import {
   Send,
   Mail,
@@ -25,6 +26,7 @@ interface FormErrors {
   name?: string;
   email?: string;
   message?: string;
+  submit?: string;
 }
 
 export default function Contact() {
@@ -38,6 +40,26 @@ export default function Contact() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [csrfToken, setCsrfToken] = useState<string>("");
+
+  // Fetch CSRF token on component mount.
+  useEffect(() => {
+    const fetchCSRFToken = async () => {
+      try {
+        const response = await fetch("/api/csrf");
+        const data = await response.json();
+        if (data.csrfToken) {
+          setCsrfToken(data.csrfToken);
+        }
+      } catch (error) {
+        if (process.env.NODE_ENV === "development") {
+          console.error("Failed to fetch CSRF token:", error);
+        }
+      }
+    };
+
+    fetchCSRFToken();
+  }, []);
 
   // Guardrail: Input validation.
   const validateForm = (): boolean => {
@@ -73,11 +95,19 @@ export default function Contact() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Guardrail: Sanitize input.
+  // Guardrail: Sanitize input using DOMPurify for defense in depth.
   const sanitizeInput = (input: string): string => {
+    if (typeof window !== "undefined") {
+      // Use DOMPurify for comprehensive sanitization.
+      return DOMPurify.sanitize(input, {
+        ALLOWED_TAGS: [],
+        ALLOWED_ATTR: [],
+      });
+    }
+    // Fallback for server-side: remove HTML tags and dangerous characters.
     return input
-      .replace(/<[^>]*>/g, "") // Remove HTML tags.
-      .replace(/[<>\"'&]/g, ""); // Remove potentially dangerous characters.
+      .replace(/<[^>]*>/g, "")
+      .replace(/[<>\"'&]/g, "");
   };
 
   const handleChange = (
@@ -103,22 +133,73 @@ export default function Contact() {
 
     if (!validateForm()) return;
 
+    // Validate CSRF token is available.
+    if (!csrfToken) {
+      setErrors((prev) => ({
+        ...prev,
+        submit: "Security token missing. Please refresh the page and try again.",
+      }));
+      return;
+    }
+
     setIsSubmitting(true);
+    setErrors((prev) => ({ ...prev, submit: undefined }));
 
-    // Simulate form submission.
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || undefined,
+          website: formData.website || undefined,
+          message: formData.message,
+          csrfToken: csrfToken,
+        }),
+      });
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+      const data = await response.json();
 
-    // Reset form after submission.
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      website: "",
-      message: "",
-    });
+      if (!response.ok) {
+        setErrors((prev) => ({
+          ...prev,
+          submit: data.error || "Failed to submit form. Please try again.",
+        }));
+        setIsSubmitting(false);
+        return;
+      }
+
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+
+      // Reset form after successful submission.
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        website: "",
+        message: "",
+      });
+
+      // Fetch new CSRF token for next submission.
+      const csrfResponse = await fetch("/api/csrf");
+      const csrfData = await csrfResponse.json();
+      if (csrfData.csrfToken) {
+        setCsrfToken(csrfData.csrfToken);
+      }
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Form submission error:", error);
+      }
+      setErrors((prev) => ({
+        ...prev,
+        submit: "An error occurred. Please try again later.",
+      }));
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -300,6 +381,16 @@ export default function Contact() {
                   start the project. Maintenance is $5,300 per month on a recurring basis.
                 </p>
               </div>
+
+              {/* Submit Error Display */}
+              {errors.submit && (
+                <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
+                  <p className="text-red-600 text-sm flex items-center gap-2">
+                    <AlertCircle size={16} />
+                    {errors.submit}
+                  </p>
+                </div>
+              )}
 
               {/* Submit Button */}
               <motion.button

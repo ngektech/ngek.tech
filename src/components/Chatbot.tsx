@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import DOMPurify from "dompurify";
 import { MessageCircle, Send, X, Bot, Sparkles } from "lucide-react";
 
 interface Message {
@@ -151,12 +152,26 @@ export default function Chatbot() {
     scrollToBottom();
   }, [messages]);
 
+  // Guardrail: Sanitize user input before storing/displaying.
+  const sanitizeInput = (input: string): string => {
+    if (typeof window !== "undefined") {
+      return DOMPurify.sanitize(input, {
+        ALLOWED_TAGS: [],
+        ALLOWED_ATTR: [],
+      });
+    }
+    return input.replace(/<[^>]*>/g, "").replace(/[<>\"'&]/g, "");
+  };
+
   const handleSend = () => {
     if (!input.trim()) return;
 
+    // Sanitize input before storing.
+    const sanitizedInput = sanitizeInput(input);
+
     const userMessage: Message = {
       id: Date.now().toString(),
-      text: input,
+      text: sanitizedInput,
       sender: "user",
     };
 
@@ -166,7 +181,7 @@ export default function Chatbot() {
 
     // Simulate typing delay.
     setTimeout(() => {
-      const botResponse = getResponse(input);
+      const botResponse = getResponse(sanitizedInput);
       setMessages((prev) => [...prev, botResponse]);
       setIsTyping(false);
     }, 800);
