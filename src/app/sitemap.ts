@@ -8,6 +8,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "tso-time-space-organization",
     "how-does-yoga-work-on-web-apps",
     "quantum-science-behind-nextjs",
+    "data-analytics-on-jio-wifi-by-nikola-frequency",
+    "nikola-tonic-in-reactjs",
+    "nikola-sonic-using-cpp",
+    "the-truth-of-c-language-by-aditya-patange",
+    "data-mining-business-intelligence-friston-signals",
+    "solid-principles-ydni-you-do-need-it",
+    "divine-programming-system-dps",
+    "ebxo-energy-bits-xi-openers-polyglot-programmers",
   ];
 
   const blogUrls = blogPosts.map((slug) => ({

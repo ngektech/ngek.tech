@@ -1,8 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BookOpen, Clock, ArrowRight, Code, Timer, Heart, Atom, Wifi, Layers, Music, Terminal } from "lucide-react";
+import { BookOpen, Clock, ArrowRight, Code, Timer, Heart, Atom, Wifi, Layers, Music, Terminal, Brain, Blocks, Sparkles, Globe } from "lucide-react";
 
 const blogPosts = [
   {
@@ -69,9 +70,47 @@ const blogPosts = [
     readTime: "18 min read.",
     category: "C Language.",
   },
+  {
+    slug: "data-mining-business-intelligence-friston-signals",
+    title: "Data Mining & BI from a Lens of Friston Signals.",
+    excerpt: "Exploring the intersection of Karl Friston's Free Energy Principle and modern data analytics for predictive business intelligence.",
+    icon: Brain,
+    readTime: "14 min read.",
+    category: "Data Science.",
+  },
+  {
+    slug: "solid-principles-ydni-you-do-need-it",
+    title: "SOLID Principles and YDNI (You Do Need It).",
+    excerpt: "A counterpoint to YAGNI: Understanding when you actually do need abstraction, planning, and proper architecture.",
+    icon: Blocks,
+    readTime: "16 min read.",
+    category: "Architecture.",
+  },
+  {
+    slug: "divine-programming-system-dps",
+    title: "Divine Programming System (DPS).",
+    excerpt: "A transcendent approach to software architecture that aligns code with universal principles of creation and harmony.",
+    icon: Sparkles,
+    readTime: "18 min read.",
+    category: "Philosophy.",
+  },
+  {
+    slug: "ebxo-energy-bits-xi-openers-polyglot-programmers",
+    title: "EBXO: How Polyglot Programmers Work.",
+    excerpt: "Understanding how polyglot programmers harness the power of multiple languages through the EBXO framework.",
+    icon: Globe,
+    readTime: "15 min read.",
+    category: "Career.",
+  },
 ];
 
+const INITIAL_DISPLAY_COUNT = 8;
+
 export default function Blog() {
+  const [showAll, setShowAll] = useState(false);
+  const displayedPosts = showAll ? blogPosts : blogPosts.slice(0, INITIAL_DISPLAY_COUNT);
+  const hasMorePosts = blogPosts.length > INITIAL_DISPLAY_COUNT;
+
   return (
     <section id="blog" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -91,7 +130,7 @@ export default function Blog() {
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {blogPosts.map((post, index) => (
+          {displayedPosts.map((post, index) => (
             <motion.article
               key={post.slug}
               initial={{ opacity: 0, y: 30 }}
@@ -141,6 +180,34 @@ export default function Blog() {
             </motion.article>
           ))}
         </div>
+
+        {/* See More Button */}
+        {hasMorePosts && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="text-center mt-10"
+          >
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#ff6b00] to-[#ff8533] text-white font-medium rounded-full hover:shadow-lg hover:shadow-[#ff6b00]/25 transition-all duration-300 group"
+            >
+              {showAll ? (
+                <>
+                  Show Less
+                  <ArrowRight size={18} className="transform rotate-[-90deg] group-hover:-translate-y-1 transition-transform" />
+                </>
+              ) : (
+                <>
+                  See More
+                  <ArrowRight size={18} className="transform rotate-90 group-hover:translate-y-1 transition-transform" />
+                </>
+              )}
+            </button>
+          </motion.div>
+        )}
 
         <div className="section-divider" />
       </div>
