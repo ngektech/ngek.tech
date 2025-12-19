@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BookOpen, Clock, ArrowRight, Code, Timer, Heart, Atom } from "lucide-react";
+import { BookOpen, Clock, ArrowRight, Code, Timer, Heart, Atom, Wifi, Layers, Music, Terminal } from "lucide-react";
 
 const blogPosts = [
   {
@@ -37,6 +37,38 @@ const blogPosts = [
     readTime: "15 min read.",
     category: "Framework.",
   },
+  {
+    slug: "data-analytics-on-jio-wifi-by-nikola-frequency",
+    title: "Data Analytics on Jio WiFi by Nikola Frequency.",
+    excerpt: "Exploring electromagnetic frequency principles that power Jio's WiFi network through Tesla's theories.",
+    icon: Wifi,
+    readTime: "10 min read.",
+    category: "Analytics.",
+  },
+  {
+    slug: "nikola-tonic-in-reactjs",
+    title: "Nikola Tonic in ReactJS.",
+    excerpt: "Applying Tesla's tonic frequencies to ReactJS component architecture for harmonically balanced UIs.",
+    icon: Layers,
+    readTime: "12 min read.",
+    category: "React.",
+  },
+  {
+    slug: "nikola-sonic-using-cpp",
+    title: "Nikola Sonic using C++.",
+    excerpt: "Implementing Tesla's sonic frequency theories in C++ for high-performance audio processing.",
+    icon: Music,
+    readTime: "14 min read.",
+    category: "C++.",
+  },
+  {
+    slug: "the-truth-of-c-language-by-aditya-patange",
+    title: "The Truth Of C Language.",
+    excerpt: "A deep exploration into the fundamental truths of the C programming language by Aditya Patange.",
+    icon: Terminal,
+    readTime: "18 min read.",
+    category: "C Language.",
+  },
 ];
 
 export default function Blog() {
@@ -58,7 +90,7 @@ export default function Blog() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {blogPosts.map((post, index) => (
             <motion.article
               key={post.slug}
@@ -68,40 +100,40 @@ export default function Blog() {
               viewport={{ once: true }}
               className="bg-[#fff5eb] rounded-2xl overflow-hidden hover-lift group"
             >
-              <div className="p-8">
+              <div className="p-5 lg:p-6">
                 {/* Category Badge */}
-                <div className="flex items-center justify-between mb-4">
-                  <span className="px-3 py-1 bg-white text-[#ff6b00] text-sm font-medium rounded-full">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="px-2 py-1 bg-white text-[#ff6b00] text-xs font-medium rounded-full">
                     {post.category}
                   </span>
-                  <div className="flex items-center gap-1 text-[#767676] text-sm">
-                    <Clock size={14} />
+                  <div className="flex items-center gap-1 text-[#767676] text-xs">
+                    <Clock size={12} />
                     {post.readTime}
                   </div>
                 </div>
 
                 {/* Icon */}
-                <div className="w-14 h-14 gradient-bg rounded-xl flex items-center justify-center mb-4">
-                  <post.icon size={28} className="text-white" />
+                <div className="w-12 h-12 gradient-bg rounded-xl flex items-center justify-center mb-3">
+                  <post.icon size={24} className="text-white" />
                 </div>
 
                 {/* Title */}
-                <h3 className="text-xl font-bold text-[#1a1a1a] mb-3 group-hover:text-[#ff6b00] transition-colors">
+                <h3 className="text-base lg:text-lg font-bold text-[#1a1a1a] mb-2 group-hover:text-[#ff6b00] transition-colors line-clamp-2">
                   {post.title}
                 </h3>
 
                 {/* Excerpt */}
-                <p className="text-[#666] mb-6 line-clamp-2">{post.excerpt}</p>
+                <p className="text-[#666] text-sm mb-4 line-clamp-2">{post.excerpt}</p>
 
                 {/* Read More Link */}
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="inline-flex items-center gap-2 text-[#ff6b00] font-medium group/link"
+                  className="inline-flex items-center gap-1 text-[#ff6b00] text-sm font-medium group/link"
                 >
-                  <BookOpen size={18} />
-                  Read Article.
+                  <BookOpen size={14} />
+                  Read.
                   <ArrowRight
-                    size={16}
+                    size={14}
                     className="transform group-hover/link:translate-x-1 transition-transform"
                   />
                 </Link>
