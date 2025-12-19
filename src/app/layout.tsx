@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import CookieConsent from "@/components/CookieConsent";
 
 const inter = Inter({
   weight: ["400", "500", "600", "700"],
@@ -67,6 +68,8 @@ export default function RootLayout({
         {/* Google Analytics IP Tracking */}
         <GoogleAnalytics measurementId={gaMeasurementId} />
         {children}
+        {/* Cookie Consent Banner */}
+        <CookieConsent />
       </body>
     </html>
   );
