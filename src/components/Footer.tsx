@@ -125,19 +125,33 @@ export default function Footer() {
         </div>
 
         {/* Legal Links */}
-        <div className="mt-12 flex flex-wrap justify-center gap-6">
+        <div className="mt-12 flex flex-wrap justify-center gap-4 md:gap-6">
           <Link
             href="/terms"
             className="text-[#767676] hover:text-[#ff6b00] transition-colors"
           >
             Terms and Conditions
           </Link>
-          <span className="text-[#666]">|</span>
+          <span className="text-[#666] hidden md:inline">|</span>
           <Link
             href="/privacy"
             className="text-[#767676] hover:text-[#ff6b00] transition-colors"
           >
             Privacy Policy
+          </Link>
+          <span className="text-[#666] hidden md:inline">|</span>
+          <Link
+            href="/vaccine-policy"
+            className="text-[#767676] hover:text-[#ff6b00] transition-colors"
+          >
+            Vaccine Policy
+          </Link>
+          <span className="text-[#666] hidden md:inline">|</span>
+          <Link
+            href="/cookie-policy"
+            className="text-[#767676] hover:text-[#ff6b00] transition-colors"
+          >
+            Cookie Policy
           </Link>
         </div>
 
