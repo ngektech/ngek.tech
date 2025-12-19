@@ -1,4 +1,4 @@
-// ASI Academics Quiz Types
+// ASI Academics Quiz Types.
 
 // Original skill categories for question generation.
 export type SkillCategory =
@@ -62,13 +62,13 @@ export interface FieldScore {
 // Enhanced question score with field breakdown.
 export interface EnhancedQuestionScore {
   questionId: number;
-  initialScore: number; // First pass score
-  adjustedScore: number; // Second pass (let-through) score
-  finalScore: number; // Average of both passes
+  initialScore: number; // First pass score.
+  adjustedScore: number; // Second pass (let-through) score.
+  finalScore: number; // Average of both passes.
   feedback: string;
   skillCategory: SkillCategory;
-  fieldScores: FieldScore[]; // Scores across all 12 fields
-  compositeFieldScore: number; // Average of all field scores
+  fieldScores: FieldScore[]; // Scores across all 12 fields.
+  compositeFieldScore: number; // Average of all field scores.
 }
 
 export interface Question {
@@ -93,7 +93,7 @@ export interface QuestionScore {
 
 export interface SkillScore {
   skill: SkillCategory;
-  score: number; // Average score for this skill (1-10)
+  score: number; // Average score for this skill (1-10).
   questionsCount: number;
 }
 
@@ -104,7 +104,7 @@ export interface QuizResult {
   answers: Answer[];
   scores: QuestionScore[];
   skillBreakdown: SkillScore[];
-  overallScore: number; // Percentage (0-100)
+  overallScore: number; // Percentage (0-100).
   certificateId: string;
   completedAt: Date;
 }
@@ -144,9 +144,9 @@ export interface EvaluateAnswersResponse {
   scores: QuestionScore[];
   enhancedScores: EnhancedQuestionScore[];
   skillBreakdown: SkillScore[];
-  fieldBreakdown: FieldScore[]; // Aggregate field scores across all questions
+  fieldBreakdown: FieldScore[]; // Aggregate field scores across all questions.
   overallScore: number;
-  compositeScore: number; // Average of all 12 field scores
+  compositeScore: number; // Average of all 12 field scores.
   certificateId: string;
   error?: string;
 }

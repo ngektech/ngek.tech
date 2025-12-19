@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 
 const complianceStandards = [
-  // Security & Privacy
+  // Security & Privacy.
   {
     name: "OWASP Top 10",
     fullForm: "Open Web Application Security Project",
@@ -60,7 +60,7 @@ const complianceStandards = [
     status: "Compliant",
     category: "Security",
   },
-  // FinTech
+  // FinTech.
   {
     name: "PCI DSS",
     fullForm: "Payment Card Industry Data Security Standard",
@@ -93,7 +93,7 @@ const complianceStandards = [
     status: "Compliant",
     category: "FinTech",
   },
-  // Healthcare
+  // Healthcare.
   {
     name: "HIPAA",
     fullForm: "Health Insurance Portability and Accountability Act",
@@ -126,7 +126,7 @@ const complianceStandards = [
     status: "Compliant",
     category: "Healthcare",
   },
-  // Legal
+  // Legal.
   {
     name: "ABA Guidelines",
     fullForm: "American Bar Association Model Rules",
@@ -151,7 +151,7 @@ const complianceStandards = [
     status: "Compliant",
     category: "Legal",
   },
-  // Travel
+  // Travel.
   {
     name: "IATA NDC",
     fullForm: "International Air Transport Association New Distribution Capability",

@@ -299,7 +299,7 @@ Return ONLY valid JSON with adjusted scores:
 
         return {
           field,
-          score: Math.max(finalFieldScore, 5), // Minimum 5 for any field
+          score: Math.max(finalFieldScore, 5), // Minimum 5 for any field.
           reasoning: adjustedField?.adjustment || initialField?.reasoning || "Evaluated",
         };
       });
@@ -314,7 +314,7 @@ Return ONLY valid JSON with adjusted scores:
         questionId: initial.questionId,
         initialScore: initial.initialScore,
         adjustedScore,
-        finalScore: Math.max(finalScore, 5), // Minimum 5
+        finalScore: Math.max(finalScore, 5), // Minimum 5.
         feedback: initial.feedback + (adjustment?.adjustmentReason ? ` [Adjusted: ${adjustment.adjustmentReason}]` : ""),
         skillCategory: initial.skillCategory,
         fieldScores: mergedFieldScores,
