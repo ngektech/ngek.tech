@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDatabase } from "@/lib/mongodb";
 import { validateCSRFToken, getCSRFTokenFromCookie } from "@/lib/csrf";
-import DOMPurify from "dompurify";
-import { JSDOM } from "jsdom";
-
-// Create DOMPurify instance for server-side sanitization.
-const window = new JSDOM("").window;
-const purify = DOMPurify(window);
+import DOMPurify from "isomorphic-dompurify";
 
 interface ContactFormData {
   name: string;
@@ -43,7 +38,7 @@ function checkSubmissionRateLimit(ip: string): boolean {
 }
 
 function sanitizeInput(input: string): string {
-  return purify.sanitize(input, {
+  return DOMPurify.sanitize(input, {
     ALLOWED_TAGS: [],
     ALLOWED_ATTR: [],
   });
