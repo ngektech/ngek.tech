@@ -6,6 +6,7 @@ import VacuumDemo from "@/components/VacuumDemo";
 import About from "@/components/About";
 import Team from "@/components/Team";
 import Blog from "@/components/Blog";
+import ASISuite from "@/components/ASISuite";
 import Compliance from "@/components/Compliance";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
@@ -37,6 +38,9 @@ export default function Home() {
 
         {/* Blog Section */}
         <Blog />
+
+        {/* ASI Suite - AI-Powered Tools */}
+        <ASISuite />
 
         {/* Compliance & Regulatory Section */}
         <Compliance />

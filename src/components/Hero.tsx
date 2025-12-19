@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowDown, Sparkles, Zap } from "lucide-react";
+import { ArrowDown, Sparkles, Zap, Cpu } from "lucide-react";
 import Logo from "./Logo";
 
 export default function Hero() {
@@ -99,12 +99,12 @@ export default function Hero() {
           </motion.a>
         </motion.div>
 
-        {/* Explore Button */}
+        {/* Explore Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-12"
+          className="mt-12 flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <motion.a
             href="#vacuum"
@@ -116,6 +116,24 @@ export default function Hero() {
           >
             <span>Explore.</span>
             <ArrowDown size={20} />
+          </motion.a>
+
+          <motion.a
+            href="#asi-suite"
+            animate={{
+              boxShadow: [
+                "0 0 20px rgba(255, 107, 0, 0.3)",
+                "0 0 40px rgba(255, 107, 0, 0.5)",
+                "0 0 20px rgba(255, 107, 0, 0.3)",
+              ],
+            }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[#1a1a1a] text-white font-bold rounded-full border-2 border-[#ff6b00] hover:bg-[#2a2a2a] transition-colors"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Cpu size={20} className="text-[#ff6b00]" />
+            <span>ASI Suite™</span>
           </motion.a>
         </motion.div>
       </div>

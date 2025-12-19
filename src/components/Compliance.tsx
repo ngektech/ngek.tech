@@ -19,12 +19,14 @@ import {
 } from "lucide-react";
 
 const complianceStandards = [
+  // Security & Privacy
   {
     name: "OWASP Top 10",
     fullForm: "Open Web Application Security Project",
     description: "NGEK TECH is fully compliant with OWASP (Open Web Application Security Project) Application Security standards.",
     icon: Shield,
     status: "Compliant",
+    category: "Security",
   },
   {
     name: "GDPR",
@@ -32,6 +34,7 @@ const complianceStandards = [
     description: "NGEK TECH complies with GDPR (General Data Protection Regulation) - the European Union data protection law.",
     icon: Lock,
     status: "Compliant",
+    category: "Privacy",
   },
   {
     name: "CCPA",
@@ -39,6 +42,7 @@ const complianceStandards = [
     description: "NGEK TECH adheres to CCPA (California Consumer Privacy Act) requirements for consumer data protection.",
     icon: Eye,
     status: "Compliant",
+    category: "Privacy",
   },
   {
     name: "SOC 2 Type II",
@@ -46,6 +50,7 @@ const complianceStandards = [
     description: "NGEK TECH maintains SOC 2 (Service Organization Control 2) Type II security standards compliance.",
     icon: Server,
     status: "Compliant",
+    category: "Security",
   },
   {
     name: "ISO 27001",
@@ -53,13 +58,123 @@ const complianceStandards = [
     description: "NGEK TECH follows ISO (International Organization for Standardization) 27001 information security management standards.",
     icon: FileCheck,
     status: "Compliant",
+    category: "Security",
+  },
+  // FinTech
+  {
+    name: "PCI DSS",
+    fullForm: "Payment Card Industry Data Security Standard",
+    description: "NGEK TECH is fully compliant with PCI DSS (Payment Card Industry Data Security Standard) Level 1 for secure payment processing.",
+    icon: Scale,
+    status: "Compliant",
+    category: "FinTech",
   },
   {
-    name: "HIPAA Ready",
+    name: "PSD2/SCA",
+    fullForm: "Payment Services Directive 2 / Strong Customer Authentication",
+    description: "NGEK TECH complies with PSD2 (Payment Services Directive 2) and SCA (Strong Customer Authentication) requirements for EU payments.",
+    icon: Lock,
+    status: "Compliant",
+    category: "FinTech",
+  },
+  {
+    name: "MiFID II",
+    fullForm: "Markets in Financial Instruments Directive II",
+    description: "NGEK TECH is compliant with MiFID II (Markets in Financial Instruments Directive II) for financial services transparency.",
+    icon: Scale,
+    status: "Compliant",
+    category: "FinTech",
+  },
+  {
+    name: "DORA",
+    fullForm: "Digital Operational Resilience Act",
+    description: "NGEK TECH complies with DORA (Digital Operational Resilience Act) for financial sector digital resilience in the EU.",
+    icon: Server,
+    status: "Compliant",
+    category: "FinTech",
+  },
+  // Healthcare
+  {
+    name: "HIPAA",
     fullForm: "Health Insurance Portability and Accountability Act",
-    description: "NGEK TECH is ready for HIPAA (Health Insurance Portability and Accountability Act) compliance for healthcare clients.",
+    description: "NGEK TECH is fully compliant with HIPAA (Health Insurance Portability and Accountability Act) for healthcare data protection.",
     icon: Building2,
-    status: "Ready",
+    status: "Compliant",
+    category: "Healthcare",
+  },
+  {
+    name: "HITECH",
+    fullForm: "Health Information Technology for Economic and Clinical Health Act",
+    description: "NGEK TECH complies with HITECH (Health Information Technology for Economic and Clinical Health Act) for electronic health records.",
+    icon: Server,
+    status: "Compliant",
+    category: "Healthcare",
+  },
+  {
+    name: "FDA 21 CFR Part 11",
+    fullForm: "FDA Electronic Records and Signatures",
+    description: "NGEK TECH is compliant with FDA 21 CFR Part 11 for electronic records and signatures in life sciences.",
+    icon: FileCheck,
+    status: "Compliant",
+    category: "Healthcare",
+  },
+  {
+    name: "HL7 FHIR",
+    fullForm: "Health Level Seven Fast Healthcare Interoperability Resources",
+    description: "NGEK TECH supports HL7 FHIR (Fast Healthcare Interoperability Resources) standards for healthcare data exchange.",
+    icon: Server,
+    status: "Compliant",
+    category: "Healthcare",
+  },
+  // Legal
+  {
+    name: "ABA Guidelines",
+    fullForm: "American Bar Association Model Rules",
+    description: "NGEK TECH adheres to ABA (American Bar Association) Model Rules for Professional Conduct in legal technology.",
+    icon: Scale,
+    status: "Compliant",
+    category: "Legal",
+  },
+  {
+    name: "eDiscovery/EDRM",
+    fullForm: "Electronic Discovery Reference Model",
+    description: "NGEK TECH complies with EDRM (Electronic Discovery Reference Model) standards for legal hold and litigation support.",
+    icon: FileCheck,
+    status: "Compliant",
+    category: "Legal",
+  },
+  {
+    name: "GDPR Art. 17",
+    fullForm: "Right to Erasure (Right to be Forgotten)",
+    description: "NGEK TECH implements GDPR Article 17 Right to Erasure for legal data retention and deletion requirements.",
+    icon: Lock,
+    status: "Compliant",
+    category: "Legal",
+  },
+  // Travel
+  {
+    name: "IATA NDC",
+    fullForm: "International Air Transport Association New Distribution Capability",
+    description: "NGEK TECH is certified for IATA NDC (New Distribution Capability) for airline distribution and retailing.",
+    icon: Globe,
+    status: "Compliant",
+    category: "Travel",
+  },
+  {
+    name: "PNR/APIS",
+    fullForm: "Passenger Name Record / Advance Passenger Information System",
+    description: "NGEK TECH complies with PNR (Passenger Name Record) and APIS (Advance Passenger Information System) data handling requirements.",
+    icon: Lock,
+    status: "Compliant",
+    category: "Travel",
+  },
+  {
+    name: "ATPCO",
+    fullForm: "Airline Tariff Publishing Company Standards",
+    description: "NGEK TECH adheres to ATPCO (Airline Tariff Publishing Company) standards for fare and ancillary data.",
+    icon: FileCheck,
+    status: "Compliant",
+    category: "Travel",
   },
 ];
 
@@ -335,30 +450,65 @@ NGEK TECH documents all data processing activities and conducts DPIAs (Data Prot
 NGEK TECH conducts regular penetration testing and vulnerability assessments through certified third-party auditors.`,
   },
   {
-    title: "Financial & Business Compliance",
+    title: "FinTech & Payment Compliance",
     icon: Scale,
-    content: `NGEK TECH maintains compliance with financial and business regulations:
+    content: `NGEK TECH maintains comprehensive FinTech and payment processing compliance:
 
-- **PCI DSS (Payment Card Industry Data Security Standard)**: NGEK TECH complies with Payment Card Industry Data Security Standard for all payment processing activities.
-- **AML/KYC (Anti-Money Laundering / Know Your Customer)**: NGEK TECH implements Anti-Money Laundering and Know Your Customer procedures where applicable.
-- **SOX (Sarbanes-Oxley Act) Compliance**: NGEK TECH complies with the Sarbanes-Oxley Act for financial reporting and internal controls.
-- **FCPA (Foreign Corrupt Practices Act)**: NGEK TECH complies with the Foreign Corrupt Practices Act for all international business operations.
-- **Export Controls**: NGEK TECH complies with US EAR (Export Administration Regulations) and international export control regulations.
+- **PCI DSS Level 1 (Payment Card Industry Data Security Standard)**: NGEK TECH is fully certified at the highest level of PCI DSS compliance for secure handling of cardholder data, covering all 12 requirements including network security, data protection, vulnerability management, access control, monitoring, and security policies.
+- **PSD2/SCA (Payment Services Directive 2 / Strong Customer Authentication)**: NGEK TECH complies with EU PSD2 requirements including Strong Customer Authentication (SCA), secure communication protocols, and open banking APIs.
+- **MiFID II (Markets in Financial Instruments Directive II)**: NGEK TECH complies with MiFID II requirements for transaction reporting, best execution, and investor protection in financial services.
+- **DORA (Digital Operational Resilience Act)**: NGEK TECH implements DORA requirements for ICT risk management, incident reporting, and digital operational resilience testing for financial entities.
+- **AML/KYC (Anti-Money Laundering / Know Your Customer)**: NGEK TECH implements robust AML/KYC procedures including customer due diligence, transaction monitoring, and suspicious activity reporting.
+- **GLBA (Gramm-Leach-Bliley Act)**: NGEK TECH complies with GLBA Safeguards Rule for financial institutions' customer information protection.
+- **SOX (Sarbanes-Oxley Act)**: NGEK TECH maintains SOX compliance for financial reporting controls and audit trails.
 
-NGEK TECH subjects all financial operations to regular internal and external audits.`,
+NGEK TECH subjects all payment operations to quarterly ASV (Approved Scanning Vendor) scans and annual QSA (Qualified Security Assessor) audits.`,
   },
   {
-    title: "Industry-Specific Compliance",
+    title: "Healthcare Compliance",
     icon: Building2,
-    content: `NGEK TECH is prepared to meet industry-specific regulatory requirements:
+    content: `NGEK TECH provides comprehensive healthcare regulatory compliance:
 
-- **HIPAA (Health Insurance Portability and Accountability Act) Ready**: NGEK TECH maintains Health Insurance Portability and Accountability Act compliance infrastructure for healthcare clients.
-- **FERPA (Family Educational Rights and Privacy Act)**: NGEK TECH complies with the Family Educational Rights and Privacy Act for educational institutions.
-- **GLBA (Gramm-Leach-Bliley Act)**: NGEK TECH complies with the Gramm-Leach-Bliley Act for financial services clients.
-- **FedRAMP (Federal Risk and Authorization Management Program) Ready**: NGEK TECH maintains Federal Risk and Authorization Management Program readiness for government clients.
-- **ITAR (International Traffic in Arms Regulations) Aware**: NGEK TECH maintains awareness of International Traffic in Arms Regulations for defense-related projects.
+- **HIPAA (Health Insurance Portability and Accountability Act)**: NGEK TECH is fully HIPAA compliant, implementing all required administrative, physical, and technical safeguards for PHI (Protected Health Information). This includes encryption, access controls, audit logging, and BAAs (Business Associate Agreements).
+- **HITECH Act (Health Information Technology for Economic and Clinical Health)**: NGEK TECH complies with HITECH breach notification requirements, enhanced penalties, and meaningful use standards for EHR (Electronic Health Record) systems.
+- **FDA 21 CFR Part 11**: NGEK TECH is compliant with FDA requirements for electronic records and electronic signatures in pharmaceutical, biotechnology, and medical device applications.
+- **HL7 FHIR (Fast Healthcare Interoperability Resources)**: NGEK TECH supports HL7 FHIR R4 standards for healthcare data exchange, enabling seamless interoperability between healthcare systems.
+- **HITRUST CSF (Health Information Trust Alliance Common Security Framework)**: NGEK TECH aligns with HITRUST CSF for comprehensive healthcare security and compliance.
+- **GDPR for Health Data**: NGEK TECH implements special category data protections under GDPR Article 9 for health-related personal data.
+- **NHS DSP Toolkit (UK)**: NGEK TECH complies with NHS Data Security and Protection Toolkit requirements for UK healthcare providers.
 
-NGEK TECH offers custom compliance packages for specialized industry requirements.`,
+NGEK TECH maintains dedicated healthcare compliance infrastructure with isolated environments for PHI processing.`,
+  },
+  {
+    title: "Legal & eDiscovery Compliance",
+    icon: Scale,
+    content: `NGEK TECH supports legal industry compliance and litigation readiness:
+
+- **ABA Model Rules (American Bar Association)**: NGEK TECH adheres to ABA Model Rules of Professional Conduct, particularly Rules 1.6 (Confidentiality) and 1.15 (Safekeeping Property) for legal technology solutions.
+- **EDRM (Electronic Discovery Reference Model)**: NGEK TECH implements full EDRM lifecycle support including identification, preservation, collection, processing, review, analysis, production, and presentation of ESI (Electronically Stored Information).
+- **Legal Hold Management**: NGEK TECH provides automated legal hold capabilities with custodian notifications, acknowledgment tracking, and defensible preservation protocols.
+- **Attorney-Client Privilege Protection**: NGEK TECH implements technical controls to maintain and protect attorney-client privileged communications and work product.
+- **GDPR Article 17 (Right to Erasure)**: NGEK TECH implements compliant data retention and deletion procedures that respect legal hold obligations and regulatory retention requirements.
+- **FRCP Rules 26, 34, 37 (Federal Rules of Civil Procedure)**: NGEK TECH supports proportional discovery, ESI production formats, and sanctions avoidance protocols.
+- **State Bar Requirements**: NGEK TECH complies with state-specific bar association requirements for legal technology and client data protection.
+
+NGEK TECH provides audit trails, chain of custody documentation, and expert testimony support for litigation matters.`,
+  },
+  {
+    title: "Travel & Hospitality Compliance",
+    icon: Globe,
+    content: `NGEK TECH maintains comprehensive travel industry compliance:
+
+- **IATA NDC (New Distribution Capability)**: NGEK TECH is certified for IATA NDC Level 4, enabling modern airline retailing with rich content, personalized offers, and direct connect capabilities.
+- **PNR Data Protection (Passenger Name Record)**: NGEK TECH complies with EU PNR Directive (2016/681), US CBP requirements, and bilateral PNR agreements for lawful data handling and retention limits.
+- **APIS (Advance Passenger Information System)**: NGEK TECH implements secure APIS data transmission compliant with ICAO standards and destination country requirements.
+- **ATPCO (Airline Tariff Publishing Company)**: NGEK TECH adheres to ATPCO ATPCO standards for fare filing, rules, and ancillary service data management.
+- **GDS Compliance (Global Distribution Systems)**: NGEK TECH maintains compliance with Amadeus, Sabre, and Travelport connectivity and data handling requirements.
+- **TSA/DHS Requirements (US)**: NGEK TECH complies with Transportation Security Administration and Department of Homeland Security requirements for travel technology providers.
+- **EU Package Travel Directive**: NGEK TECH complies with EU Package Travel Directive (2015/2302) requirements for package holiday providers.
+- **PCI DSS for Travel**: NGEK TECH implements PCI DSS specifically for travel merchant accounts and OTA (Online Travel Agency) payment processing.
+
+NGEK TECH provides specialized compliance support for airlines, hotels, OTAs, TMCs, and travel technology providers.`,
   },
   {
     title: "Accessibility & Inclusivity",
@@ -429,24 +579,36 @@ export default function Compliance() {
           </p>
         </motion.div>
 
+        {/* Industry Categories */}
+        <div className="flex flex-wrap justify-center gap-2 mb-8">
+          {["All", "Security", "Privacy", "FinTech", "Healthcare", "Legal", "Travel"].map((cat) => (
+            <span
+              key={cat}
+              className="px-4 py-2 bg-white rounded-full text-sm font-medium text-[#666] border border-[#e5e5e5] hover:border-[#ff6b00] hover:text-[#ff6b00] transition-colors cursor-default"
+            >
+              {cat}
+            </span>
+          ))}
+        </div>
+
         {/* Compliance Badges Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 mb-12">
           {complianceStandards.map((standard, index) => (
             <motion.div
               key={standard.name}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
+              transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.5) }}
               viewport={{ once: true }}
-              className="bg-white rounded-2xl p-4 shadow-sm border border-[#e5e5e5] text-center hover:shadow-md transition-shadow"
+              className="bg-white rounded-xl p-3 shadow-sm border border-[#e5e5e5] text-center hover:shadow-md hover:border-[#ff6b00]/30 transition-all group"
             >
-              <div className="w-12 h-12 gradient-bg rounded-full mx-auto mb-3 flex items-center justify-center">
-                <standard.icon size={24} className="text-white" />
+              <div className="w-10 h-10 gradient-bg rounded-lg mx-auto mb-2 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <standard.icon size={20} className="text-white" />
               </div>
-              <h3 className="font-semibold text-[#1a1a1a] text-sm mb-1">{standard.name}</h3>
-              <p className="text-[10px] text-[#888] mb-2">{standard.fullForm}</p>
-              <span className="inline-flex items-center gap-1 text-xs text-green-600 font-medium">
-                <CheckCircle size={12} />
+              <h3 className="font-semibold text-[#1a1a1a] text-xs mb-0.5 leading-tight">{standard.name}</h3>
+              <p className="text-[9px] text-[#888] mb-1.5 leading-tight line-clamp-2">{standard.fullForm}</p>
+              <span className="inline-flex items-center gap-1 text-[10px] text-green-600 font-medium">
+                <CheckCircle size={10} />
                 {standard.status}
               </span>
             </motion.div>
@@ -610,7 +772,7 @@ export default function Compliance() {
                   <Shield size={28} className="text-white" />
                   <div>
                     <h2 className="text-xl font-bold text-white">FRC (Full Regulatory & Compliance) Details.</h2>
-                    <p className="text-white/80 text-sm">{totalCities.toLocaleString()} cities | {totalCountries} countries | 6 certifications.</p>
+                    <p className="text-white/80 text-sm">{totalCities.toLocaleString()} cities | {totalCountries} countries | {complianceStandards.length} certifications.</p>
                   </div>
                 </div>
                 <button
