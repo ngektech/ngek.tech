@@ -130,28 +130,28 @@ export default function Footer() {
             href="/terms"
             className="text-[#767676] hover:text-[#ff6b00] transition-colors"
           >
-            Terms and Conditions
+            Terms and Conditions.
           </Link>
           <span className="text-[#666] hidden md:inline">|</span>
           <Link
             href="/privacy"
             className="text-[#767676] hover:text-[#ff6b00] transition-colors"
           >
-            Privacy Policy
+            Privacy Policy.
           </Link>
           <span className="text-[#666] hidden md:inline">|</span>
           <Link
             href="/vaccine-policy"
             className="text-[#767676] hover:text-[#ff6b00] transition-colors"
           >
-            Vaccine Policy
+            Vaccine Policy.
           </Link>
           <span className="text-[#666] hidden md:inline">|</span>
           <Link
             href="/cookie-policy"
             className="text-[#767676] hover:text-[#ff6b00] transition-colors"
           >
-            Cookie Policy
+            Cookie Policy.
           </Link>
         </div>
 
