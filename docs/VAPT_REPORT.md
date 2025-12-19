@@ -14,15 +14,15 @@
 
 This Vulnerability Assessment and Penetration Testing (VAPT) report documents the security posture of the NGEK TECH website. The assessment identified **2 High**, **4 Medium**, and **6 Low** severity vulnerabilities. **All vulnerabilities have been patched.**
 
-### Risk Score: **LOW** (Previously HIGH - All Critical Issues Resolved)
+### Risk Score: **LOW** (Previously HIGH - All Critical Issues Resolved).
 
-| Severity      | Count | Status     |
-| ------------- | ----- | ---------- |
-| Critical      | 0     | N/A        |
-| High          | 2     | PATCHED    |
-| Medium        | 4     | PATCHED    |
-| Low           | 6     | PATCHED    |
-| Informational | 4     | No Action  |
+| Severity      | Count | Status    |
+| ------------- | ----- | --------- |
+| Critical      | 0     | N/A       |
+| High          | 2     | PATCHED   |
+| Medium        | 4     | PATCHED   |
+| Low           | 6     | PATCHED   |
+| Informational | 4     | No Action |
 
 ---
 
@@ -78,8 +78,14 @@ const nextConfig: NextConfig = {
           { key: "X-Frame-Options", value: "DENY" },
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
-          { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
+          },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=31536000; includeSubDomains",
+          },
         ],
       },
     ];
@@ -117,24 +123,27 @@ The contact form previously simulated submission without actually sending data a
 Complete backend implementation with CSRF protection:
 
 1. **CSRF Token Generation** (`src/lib/csrf.ts`):
-   - Cryptographic HMAC-SHA256 signed tokens
-   - 1-hour token expiry with timestamp validation
-   - Constant-time comparison to prevent timing attacks
+
+   - Cryptographic HMAC-SHA256 signed tokens.
+   - 1-hour token expiry with timestamp validation.
+   - Constant-time comparison to prevent timing attacks.
 
 2. **CSRF API Endpoint** (`src/app/api/csrf/route.ts`):
-   - Generates secure CSRF tokens
-   - Sets HttpOnly, Secure, SameSite=Strict cookies
+
+   - Generates secure CSRF tokens.
+   - Sets HttpOnly, Secure, SameSite=Strict cookies.
 
 3. **Contact Form API** (`src/app/api/contact/route.ts`):
-   - MongoDB integration for storing submissions
-   - Server-side DOMPurify sanitization
-   - Rate limiting (5 submissions per hour per IP)
-   - CSRF token validation
+
+   - MongoDB integration for storing submissions.
+   - Server-side DOMPurify sanitization.
+   - Rate limiting (5 submissions per hour per IP).
+   - CSRF token validation.
 
 4. **Frontend Integration** (`src/components/Contact.tsx`):
-   - Fetches CSRF token on component mount
-   - Sends token with form submission
-   - Proper error handling and user feedback
+   - Fetches CSRF token on component mount.
+   - Sends token with form submission.
+   - Proper error handling and user feedback.
 
 ---
 
@@ -166,6 +175,7 @@ Input sanitization previously used basic regex that could be bypassed with encod
 Implemented DOMPurify for comprehensive sanitization:
 
 **Client-side** (`src/components/Contact.tsx`):
+
 ```typescript
 import DOMPurify from "dompurify";
 
@@ -181,6 +191,7 @@ const sanitizeInput = (input: string): string => {
 ```
 
 **Server-side** (`src/app/api/contact/route.ts`):
+
 ```typescript
 import DOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
@@ -258,6 +269,7 @@ No rate limiting was implemented on any endpoint, allowing brute force attacks, 
 Implemented two-tier rate limiting:
 
 **1. Application-wide Rate Limiting** (`src/middleware.ts`):
+
 ```typescript
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
 const RATE_LIMIT_MAX_REQUESTS = 100; // 100 requests per minute
@@ -268,7 +280,10 @@ export function middleware(request: NextRequest) {
   if (!checkRateLimit(key)) {
     return new NextResponse(
       JSON.stringify({ error: "Too many requests. Please try again later." }),
-      { status: 429, headers: { "Content-Type": "application/json", "Retry-After": "60" } }
+      {
+        status: 429,
+        headers: { "Content-Type": "application/json", "Retry-After": "60" },
+      }
     );
   }
 
@@ -277,8 +292,9 @@ export function middleware(request: NextRequest) {
 ```
 
 **2. Contact Form Rate Limiting** (`src/app/api/contact/route.ts`):
-- 5 submissions per hour per IP address
-- Prevents spam and abuse of the contact form
+
+- 5 submissions per hour per IP address.
+- Prevents spam and abuse of the contact form.
 
 ---
 
@@ -299,9 +315,10 @@ Google Analytics tracks full page URLs and paths, which may include sensitive in
 
 **Solution:**
 This is an **accepted business risk**. Full analytics tracking is intentionally enabled to:
-- Monitor user behavior for service improvement
-- Detect and prevent abuse of service
-- Analyze traffic patterns for security monitoring
+
+- Monitor user behavior for service improvement.
+- Detect and prevent abuse of service.
+- Analyze traffic patterns for security monitoring.
 
 The application does not have authenticated routes or sensitive query parameters that would be exposed.
 
@@ -371,10 +388,11 @@ const inter = Inter({
 ```
 
 This approach:
-- Self-hosts fonts eliminating external dependencies
-- Provides automatic optimization
-- Eliminates layout shift
-- No external requests that could be intercepted
+
+- Self-hosts fonts eliminating external dependencies.
+- Provides automatic optimization.
+- Eliminates layout shift.
+- No external requests that could be intercepted.
 
 ---
 
@@ -394,9 +412,10 @@ Personal email exposed in mailto link.
 
 **Solution:**
 This is an **accepted business risk**. The email address is intentionally public as:
-- It serves as the primary business contact method
-- A contact form is also available as an alternative
-- The email domain is personal but used for business purposes
+
+- It serves as the primary business contact method.
+- A contact form is also available as an alternative.
+- The email domain is personal but used for business purposes.
 
 ---
 
@@ -418,19 +437,20 @@ Google Analytics cookies were set with `SameSite=None;Secure` which is less rest
 Updated cookie flags to more secure settings:
 
 ```typescript
-gtag('config', '${measurementId}', {
+gtag("config", "${measurementId}", {
   page_title: document.title,
   page_location: window.location.href,
   page_path: window.location.pathname,
   send_page_view: true,
-  cookie_flags: 'SameSite=Lax;Secure;HttpOnly'
+  cookie_flags: "SameSite=Lax;Secure;HttpOnly",
 });
 ```
 
 Changes:
-- `SameSite=Lax` - Prevents CSRF while allowing same-site requests
-- `Secure` - Cookies only sent over HTTPS
-- `HttpOnly` - Prevents JavaScript access to cookies
+
+- `SameSite=Lax` - Prevents CSRF while allowing same-site requests.
+- `Secure` - Cookies only sent over HTTPS.
+- `HttpOnly` - Prevents JavaScript access to cookies.
 
 ---
 
@@ -496,30 +516,34 @@ No React error boundaries were implemented. Errors could expose stack traces in 
 Implemented comprehensive error handling:
 
 **1. Page Error Handler** (`src/app/error.tsx`):
-- Catches errors within page components
-- Shows user-friendly error message
-- Logs details only in development mode
+
+- Catches errors within page components.
+- Shows user-friendly error message.
+- Logs details only in development mode.
 
 **2. Global Error Handler** (`src/app/global-error.tsx`):
-- Catches root-level errors
-- Provides fallback UI even when layout fails
-- Development-only error details
+
+- Catches root-level errors.
+- Provides fallback UI even when layout fails.
+- Development-only error details.
 
 **3. Reusable Error Boundary** (`src/components/ErrorBoundary.tsx`):
-- Class component for wrapping child components
-- Customizable fallback UI
-- Environment-aware error logging
+
+- Class component for wrapping child components.
+- Customizable fallback UI.
+- Environment-aware error logging.
 
 All error handlers:
-- Show generic messages in production
-- Log detailed stack traces only in development
-- Provide recovery options (retry, go home)
+
+- Show generic messages in production.
+- Log detailed stack traces only in development.
+- Provide recovery options (retry, go home).
 
 ---
 
 ## INFORMATIONAL FINDINGS
 
-### INFO-001: Dependencies Up to Date
+### INFO-001: Dependencies Up to Date.
 
 All npm dependencies show 0 known vulnerabilities.
 
@@ -528,15 +552,15 @@ $ npm audit
 found 0 vulnerabilities
 ```
 
-### INFO-002: TypeScript Strict Mode
+### INFO-002: TypeScript Strict Mode.
 
 TypeScript is properly configured with strict type checking.
 
-### INFO-003: XSS Protection in React
+### INFO-003: XSS Protection in React.
 
 React's JSX automatically escapes content, providing baseline XSS protection.
 
-### INFO-004: External Links Protected
+### INFO-004: External Links Protected.
 
 All `target="_blank"` links include `rel="noopener noreferrer"`.
 
@@ -544,32 +568,32 @@ All `target="_blank"` links include `rel="noopener noreferrer"`.
 
 ## COMPLIANCE STATUS
 
-| Standard            | Status    | Notes                                     |
-| ------------------- | --------- | ----------------------------------------- |
-| OWASP Top 10 (2021) | Compliant | All identified issues patched             |
-| GDPR                | Compliant | Analytics tracking disclosed              |
-| PCI-DSS             | N/A       | No payment processing in application      |
-| SOC 2               | N/A       | Enterprise audit required                 |
+| Standard            | Status    | Notes                                |
+| ------------------- | --------- | ------------------------------------ |
+| OWASP Top 10 (2021) | Compliant | All identified issues patched        |
+| GDPR                | Compliant | Analytics tracking disclosed         |
+| PCI-DSS             | N/A       | No payment processing in application |
+| SOC 2               | N/A       | Enterprise audit required            |
 
 ---
 
 ## TESTING METHODOLOGY
 
-1. **Static Analysis:** Source code review of all TypeScript/TSX files
-2. **Dependency Analysis:** npm audit and dependency tree review
-3. **Configuration Review:** Environment files and Next.js configuration
-4. **Input Validation Testing:** Form and chatbot input analysis
-5. **Authentication Review:** Session and access control analysis
-6. **Header Analysis:** HTTP security header verification
+1. **Static Analysis:** Source code review of all TypeScript/TSX files.
+2. **Dependency Analysis:** npm audit and dependency tree review.
+3. **Configuration Review:** Environment files and Next.js configuration.
+4. **Input Validation Testing:** Form and chatbot input analysis.
+5. **Authentication Review:** Session and access control analysis.
+6. **Header Analysis:** HTTP security header verification.
 
 ---
 
 ## TOOLS USED
 
-- npm audit (dependency vulnerability scanning)
-- Manual source code review
-- grep/ripgrep (pattern matching)
-- Custom security rule checks
+- npm audit (dependency vulnerability scanning).
+- Manual source code review.
+- grep/ripgrep (pattern matching).
+- Custom security rule checks.
 
 ---
 
@@ -587,22 +611,22 @@ All `target="_blank"` links include `rel="noopener noreferrer"`.
 
 ## APPENDIX B: Files Modified for Security Patches
 
-| File | Vulnerabilities Addressed |
-|------|---------------------------|
-| `next.config.ts` | VULN-002 (Security Headers) |
-| `src/components/Contact.tsx` | VULN-004 (CSRF), VULN-005 (Sanitization) |
-| `src/app/api/contact/route.ts` | VULN-004 (Backend), VULN-005 (Server Sanitization), VULN-009 (Rate Limiting) |
-| `src/app/api/csrf/route.ts` | VULN-004 (CSRF Token API) |
-| `src/lib/csrf.ts` | VULN-004 (CSRF Token Generation) |
-| `src/lib/mongodb.ts` | VULN-004 (Database Integration) |
-| `src/lib/blog.ts` | VULN-008 (Path Traversal), VULN-010 (Error Messages) |
-| `src/middleware.ts` | VULN-009 (Rate Limiting) |
-| `src/components/GoogleAnalytics.tsx` | VULN-013 (Cookie Security) |
-| `src/components/Chatbot.tsx` | VULN-014 (Input Sanitization) |
-| `src/app/layout.tsx` | VULN-011 (SRI - next/font) |
-| `src/app/error.tsx` | VULN-015 (Error Boundaries) |
-| `src/app/global-error.tsx` | VULN-015 (Error Boundaries) |
-| `src/components/ErrorBoundary.tsx` | VULN-015 (Error Boundaries) |
+| File                                 | Vulnerabilities Addressed                                                    |
+| ------------------------------------ | ---------------------------------------------------------------------------- |
+| `next.config.ts`                     | VULN-002 (Security Headers)                                                  |
+| `src/components/Contact.tsx`         | VULN-004 (CSRF), VULN-005 (Sanitization)                                     |
+| `src/app/api/contact/route.ts`       | VULN-004 (Backend), VULN-005 (Server Sanitization), VULN-009 (Rate Limiting) |
+| `src/app/api/csrf/route.ts`          | VULN-004 (CSRF Token API)                                                    |
+| `src/lib/csrf.ts`                    | VULN-004 (CSRF Token Generation)                                             |
+| `src/lib/mongodb.ts`                 | VULN-004 (Database Integration)                                              |
+| `src/lib/blog.ts`                    | VULN-008 (Path Traversal), VULN-010 (Error Messages)                         |
+| `src/middleware.ts`                  | VULN-009 (Rate Limiting)                                                     |
+| `src/components/GoogleAnalytics.tsx` | VULN-013 (Cookie Security)                                                   |
+| `src/components/Chatbot.tsx`         | VULN-014 (Input Sanitization)                                                |
+| `src/app/layout.tsx`                 | VULN-011 (SRI - next/font)                                                   |
+| `src/app/error.tsx`                  | VULN-015 (Error Boundaries)                                                  |
+| `src/app/global-error.tsx`           | VULN-015 (Error Boundaries)                                                  |
+| `src/components/ErrorBoundary.tsx`   | VULN-015 (Error Boundaries)                                                  |
 
 ---
 
@@ -616,7 +640,7 @@ All `target="_blank"` links include `rel="noopener noreferrer"`.
 
 ---
 
-**Report Generated:** December 19, 2025
-**Last Updated:** December 19, 2025
-**Classification:** Confidential
-**Distribution:** NGEK TECH Internal Use Only
+**Report Generated:** December 19, 2025.
+**Last Updated:** December 19, 2025.
+**Classification:** Confidential.
+**Distribution:** NGEK TECH Internal Use Only.
