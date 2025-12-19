@@ -15,6 +15,7 @@ import {
   Scale,
   Eye,
   Server,
+  MapPin,
 } from "lucide-react";
 
 const complianceStandards = [
@@ -62,100 +63,248 @@ const complianceStandards = [
   },
 ];
 
-const jurisdictions = {
+const jurisdictions: Record<string, string[]> = {
   "United States of America (USA)": [
-    "California",
-    "Texas",
-    "New York",
-    "Florida",
-    "Illinois",
-    "Pennsylvania",
-    "Ohio",
-    "Georgia",
-    "North Carolina",
-    "Michigan",
-    "New Jersey",
-    "Virginia",
-    "Washington",
-    "Arizona",
-    "Massachusetts",
-    "Tennessee",
-    "Indiana",
-    "Missouri",
-    "Maryland",
-    "Wisconsin",
-    "Colorado",
-    "Minnesota",
-    "South Carolina",
-    "Alabama",
-    "Louisiana",
-    "Kentucky",
-    "Oregon",
-    "Oklahoma",
-    "Connecticut",
-    "Utah",
-    "Nevada",
-    "Arkansas",
-    "Mississippi",
-    "Kansas",
-    "New Mexico",
-    "Nebraska",
-    "Idaho",
-    "West Virginia",
-    "Hawaii",
-    "New Hampshire",
-    "Maine",
-    "Montana",
-    "Rhode Island",
-    "Delaware",
-    "South Dakota",
-    "North Dakota",
-    "Alaska",
-    "Vermont",
-    "Wyoming",
-    "District of Columbia",
+    "New York City", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego",
+    "Dallas", "San Jose", "Austin", "Jacksonville", "Fort Worth", "Columbus", "Charlotte", "San Francisco",
+    "Indianapolis", "Seattle", "Denver", "Washington D.C.", "Boston", "Nashville", "Detroit", "Portland",
+    "Las Vegas", "Memphis", "Louisville", "Baltimore", "Milwaukee", "Albuquerque", "Tucson", "Fresno",
+    "Sacramento", "Kansas City", "Mesa", "Atlanta", "Omaha", "Colorado Springs", "Raleigh", "Miami",
+    "Long Beach", "Virginia Beach", "Oakland", "Minneapolis", "Tampa", "Tulsa", "Arlington", "New Orleans",
+    "Wichita", "Cleveland", "Bakersfield", "Aurora", "Anaheim", "Honolulu", "Santa Ana", "Riverside",
+    "Corpus Christi", "Lexington", "Henderson", "Stockton", "Saint Paul", "Cincinnati", "St. Louis",
+    "Pittsburgh", "Greensboro", "Lincoln", "Anchorage", "Plano", "Orlando", "Irvine", "Newark",
+    "Durham", "Chula Vista", "Toledo", "Fort Wayne", "St. Petersburg", "Laredo", "Jersey City",
+    "Chandler", "Madison", "Lubbock", "Scottsdale", "Reno", "Buffalo", "Gilbert", "Glendale",
+    "North Las Vegas", "Winston-Salem", "Chesapeake", "Norfolk", "Fremont", "Garland", "Irving",
+    "Hialeah", "Richmond", "Boise", "Spokane", "Baton Rouge",
   ],
-  India: [
-    "Mumbai",
-    "Delhi",
-    "Bangalore",
-    "Hyderabad",
-    "Chennai",
-    "Kolkata",
-    "Pune",
-    "Ahmedabad",
-    "Jaipur",
-    "Surat",
-    "Lucknow",
-    "Kanpur",
-    "Nagpur",
-    "Indore",
-    "Thane",
-    "Bhopal",
-    "Visakhapatnam",
-    "Patna",
-    "Vadodara",
-    "Ghaziabad",
+  "India": [
+    "Mumbai", "Delhi", "Bangalore", "Hyderabad", "Chennai", "Kolkata", "Pune", "Ahmedabad",
+    "Jaipur", "Surat", "Lucknow", "Kanpur", "Nagpur", "Indore", "Thane", "Bhopal",
+    "Visakhapatnam", "Patna", "Vadodara", "Ghaziabad", "Ludhiana", "Agra", "Nashik", "Faridabad",
+    "Meerut", "Rajkot", "Varanasi", "Srinagar", "Aurangabad", "Dhanbad", "Amritsar", "Navi Mumbai",
+    "Allahabad", "Ranchi", "Howrah", "Coimbatore", "Jabalpur", "Gwalior", "Vijayawada", "Jodhpur",
+    "Madurai", "Raipur", "Kota", "Chandigarh", "Guwahati", "Solapur", "Hubli", "Mysore",
+    "Tiruchirappalli", "Bareilly", "Aligarh", "Tiruppur", "Moradabad", "Jalandhar", "Bhubaneswar",
+    "Salem", "Warangal", "Guntur", "Bhiwandi", "Saharanpur", "Gorakhpur", "Bikaner", "Amravati",
+    "Noida", "Jamshedpur", "Bhilai", "Cuttack", "Firozabad", "Kochi", "Nellore", "Bhavnagar",
+    "Dehradun", "Durgapur", "Asansol", "Rourkela", "Nanded", "Kolhapur", "Ajmer", "Akola",
+    "Gulbarga", "Jamnagar", "Ujjain", "Loni", "Siliguri", "Jhansi", "Ulhasnagar", "Jammu",
+    "Sangli", "Mangalore", "Erode", "Belgaum", "Ambattur", "Tirunelveli", "Malegaon", "Gaya",
+    "Udaipur", "Maheshtala", "Davanagere", "Kozhikode", "Kurnool", "Rajpur Sonarpur", "Rajahmundry",
   ],
-  "United Kingdom (UK)": ["London", "Birmingham", "Manchester", "Leeds", "Glasgow", "Liverpool", "Bristol", "Edinburgh"],
-  Canada: ["Toronto", "Montreal", "Vancouver", "Calgary", "Edmonton", "Ottawa", "Winnipeg", "Quebec City"],
-  Australia: ["Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide", "Gold Coast", "Canberra", "Newcastle"],
-  Germany: ["Berlin", "Hamburg", "Munich", "Cologne", "Frankfurt", "Stuttgart", "Dusseldorf", "Leipzig"],
-  France: ["Paris", "Marseille", "Lyon", "Toulouse", "Nice", "Nantes", "Strasbourg", "Montpellier"],
-  Japan: ["Tokyo", "Osaka", "Yokohama", "Nagoya", "Sapporo", "Fukuoka", "Kobe", "Kyoto"],
-  Singapore: ["Singapore"],
-  "United Arab Emirates (UAE)": ["Dubai", "Abu Dhabi", "Sharjah"],
-  "Hong Kong SAR": ["Hong Kong"],
-  Netherlands: ["Amsterdam", "Rotterdam", "The Hague", "Utrecht"],
-  Switzerland: ["Zurich", "Geneva", "Basel", "Bern"],
-  Sweden: ["Stockholm", "Gothenburg", "Malmo"],
-  Ireland: ["Dublin", "Cork", "Galway"],
-  "New Zealand": ["Auckland", "Wellington", "Christchurch"],
-  "South Korea": ["Seoul", "Busan", "Incheon"],
-  Brazil: ["Sao Paulo", "Rio de Janeiro", "Brasilia"],
-  Mexico: ["Mexico City", "Guadalajara", "Monterrey"],
-  Spain: ["Madrid", "Barcelona", "Valencia"],
-  Italy: ["Rome", "Milan", "Naples", "Turin"],
+  "United Kingdom (UK)": [
+    "London", "Birmingham", "Manchester", "Leeds", "Glasgow", "Liverpool", "Bristol", "Edinburgh",
+    "Sheffield", "Leicester", "Coventry", "Bradford", "Cardiff", "Belfast", "Nottingham", "Kingston upon Hull",
+    "Newcastle upon Tyne", "Stoke-on-Trent", "Southampton", "Derby", "Portsmouth", "Brighton", "Plymouth",
+    "Northampton", "Reading", "Luton", "Wolverhampton", "Bolton", "Aberdeen", "Bournemouth", "Norwich",
+    "Swindon", "Swansea", "Milton Keynes", "Southend-on-Sea", "Middlesbrough", "Peterborough", "Sunderland",
+    "Warrington", "Huddersfield", "Oxford", "Poole", "Slough", "Cambridge", "Dundee", "York", "Ipswich",
+  ],
+  "Canada": [
+    "Toronto", "Montreal", "Vancouver", "Calgary", "Edmonton", "Ottawa", "Winnipeg", "Quebec City",
+    "Hamilton", "Kitchener", "London", "Victoria", "Halifax", "Oshawa", "Windsor", "Saskatoon",
+    "Regina", "St. Catharines", "St. John's", "Barrie", "Kelowna", "Abbotsford", "Sudbury", "Kingston",
+    "Saguenay", "Trois-Rivières", "Guelph", "Moncton", "Brantford", "Thunder Bay", "Saint John",
+    "Peterborough", "Nanaimo", "Lethbridge", "Kamloops", "Red Deer", "Medicine Hat", "Drummondville",
+  ],
+  "Australia": [
+    "Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide", "Gold Coast", "Canberra", "Newcastle",
+    "Wollongong", "Sunshine Coast", "Hobart", "Geelong", "Townsville", "Cairns", "Darwin", "Toowoomba",
+    "Ballarat", "Bendigo", "Launceston", "Mackay", "Rockhampton", "Bunbury", "Bundaberg", "Hervey Bay",
+    "Wagga Wagga", "Coffs Harbour", "Gladstone", "Mildura", "Shepparton", "Albury", "Port Macquarie",
+  ],
+  "Germany": [
+    "Berlin", "Hamburg", "Munich", "Cologne", "Frankfurt", "Stuttgart", "Dusseldorf", "Leipzig",
+    "Dortmund", "Essen", "Bremen", "Dresden", "Hanover", "Nuremberg", "Duisburg", "Bochum",
+    "Wuppertal", "Bielefeld", "Bonn", "Munster", "Mannheim", "Karlsruhe", "Augsburg", "Wiesbaden",
+    "Monchengladbach", "Gelsenkirchen", "Aachen", "Braunschweig", "Kiel", "Chemnitz", "Halle",
+    "Magdeburg", "Freiburg", "Krefeld", "Mainz", "Lubeck", "Erfurt", "Oberhausen", "Rostock",
+  ],
+  "France": [
+    "Paris", "Marseille", "Lyon", "Toulouse", "Nice", "Nantes", "Strasbourg", "Montpellier",
+    "Bordeaux", "Lille", "Rennes", "Reims", "Saint-Etienne", "Toulon", "Le Havre", "Grenoble",
+    "Dijon", "Angers", "Nimes", "Villeurbanne", "Saint-Denis", "Le Mans", "Aix-en-Provence",
+    "Clermont-Ferrand", "Brest", "Tours", "Limoges", "Amiens", "Perpignan", "Metz", "Besancon",
+    "Orleans", "Mulhouse", "Rouen", "Caen", "Nancy", "Saint-Paul", "Argenteuil", "Montreuil",
+  ],
+  "Japan": [
+    "Tokyo", "Yokohama", "Osaka", "Nagoya", "Sapporo", "Fukuoka", "Kobe", "Kyoto",
+    "Kawasaki", "Saitama", "Hiroshima", "Sendai", "Kitakyushu", "Chiba", "Sakai", "Niigata",
+    "Hamamatsu", "Shizuoka", "Sagamihara", "Okayama", "Kumamoto", "Kagoshima", "Funabashi",
+    "Hachioji", "Kawaguchi", "Himeji", "Matsuyama", "Higashiosaka", "Utsunomiya", "Matsudo",
+    "Nishinomiya", "Ichikawa", "Kurashiki", "Fukuyama", "Amagasaki", "Kanazawa", "Nagasaki",
+  ],
+  "China": [
+    "Shanghai", "Beijing", "Guangzhou", "Shenzhen", "Chengdu", "Hangzhou", "Wuhan", "Xi'an",
+    "Suzhou", "Nanjing", "Tianjin", "Chongqing", "Dongguan", "Shenyang", "Qingdao", "Ningbo",
+    "Zhengzhou", "Changsha", "Dalian", "Harbin", "Jinan", "Kunming", "Foshan", "Fuzhou",
+    "Changchun", "Wuxi", "Xiamen", "Hefei", "Nanchang", "Shijiazhuang", "Taiyuan", "Guiyang",
+    "Nanning", "Lanzhou", "Wenzhou", "Zhuhai", "Huizhou", "Zhongshan", "Jiangmen", "Yangzhou",
+  ],
+  "Singapore": ["Singapore"],
+  "United Arab Emirates (UAE)": [
+    "Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Ras Al Khaimah", "Fujairah", "Umm Al Quwain",
+    "Al Ain", "Khalifa City", "Dubai Marina", "Jumeirah", "Business Bay", "DIFC",
+  ],
+  "Hong Kong SAR": ["Hong Kong", "Kowloon", "New Territories", "Lantau Island", "Hong Kong Island"],
+  "Netherlands": [
+    "Amsterdam", "Rotterdam", "The Hague", "Utrecht", "Eindhoven", "Tilburg", "Groningen",
+    "Almere", "Breda", "Nijmegen", "Apeldoorn", "Haarlem", "Arnhem", "Zaanstad", "Amersfoort",
+    "Haarlemmermeer", "Den Bosch", "Zoetermeer", "Zwolle", "Maastricht", "Leiden", "Dordrecht",
+  ],
+  "Switzerland": [
+    "Zurich", "Geneva", "Basel", "Bern", "Lausanne", "Winterthur", "Lucerne", "St. Gallen",
+    "Lugano", "Biel", "Thun", "Koniz", "La Chaux-de-Fonds", "Fribourg", "Schaffhausen", "Vernier",
+  ],
+  "Sweden": [
+    "Stockholm", "Gothenburg", "Malmo", "Uppsala", "Vasteras", "Orebro", "Linkoping", "Helsingborg",
+    "Jonkoping", "Norrkoping", "Lund", "Umea", "Gavle", "Boras", "Sodertalje", "Eskilstuna",
+  ],
+  "Ireland": [
+    "Dublin", "Cork", "Galway", "Limerick", "Waterford", "Drogheda", "Swords", "Dundalk",
+    "Bray", "Navan", "Kilkenny", "Ennis", "Carlow", "Tralee", "Newbridge", "Portlaoise",
+  ],
+  "New Zealand": [
+    "Auckland", "Wellington", "Christchurch", "Hamilton", "Tauranga", "Napier-Hastings", "Dunedin",
+    "Palmerston North", "Nelson", "Rotorua", "New Plymouth", "Whangarei", "Invercargill", "Whanganui",
+  ],
+  "South Korea": [
+    "Seoul", "Busan", "Incheon", "Daegu", "Daejeon", "Gwangju", "Suwon", "Ulsan",
+    "Changwon", "Seongnam", "Goyang", "Yongin", "Bucheon", "Ansan", "Cheongju", "Jeonju",
+    "Anyang", "Cheonan", "Namyangju", "Hwaseong", "Jeju City", "Gimhae", "Pohang", "Uijeongbu",
+  ],
+  "Brazil": [
+    "Sao Paulo", "Rio de Janeiro", "Brasilia", "Salvador", "Fortaleza", "Belo Horizonte", "Manaus",
+    "Curitiba", "Recife", "Goiania", "Porto Alegre", "Belem", "Guarulhos", "Campinas", "Sao Luis",
+    "Sao Goncalo", "Maceio", "Duque de Caxias", "Campo Grande", "Natal", "Teresina", "Sao Bernardo",
+    "Nova Iguacu", "Joao Pessoa", "Santo Andre", "Osasco", "Sao Jose dos Campos", "Jaboatao",
+    "Ribeirao Preto", "Uberlandia", "Sorocaba", "Contagem", "Aracaju", "Feira de Santana", "Cuiaba",
+  ],
+  "Mexico": [
+    "Mexico City", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "Toluca", "Leon", "Juarez",
+    "Torreon", "Queretaro", "San Luis Potosi", "Merida", "Mexicali", "Aguascalientes", "Hermosillo",
+    "Chihuahua", "Saltillo", "Cancun", "Morelia", "Veracruz", "Culiacan", "Acapulco", "Tlaxcala",
+    "Villahermosa", "Tuxtla Gutierrez", "Durango", "Tepic", "Campeche", "Cuernavaca", "Oaxaca",
+  ],
+  "Spain": [
+    "Madrid", "Barcelona", "Valencia", "Seville", "Zaragoza", "Malaga", "Murcia", "Palma",
+    "Las Palmas", "Bilbao", "Alicante", "Cordoba", "Valladolid", "Vigo", "Gijon", "Hospitalet",
+    "A Coruna", "Vitoria-Gasteiz", "Granada", "Elche", "Oviedo", "Terrassa", "Badalona", "Cartagena",
+    "Jerez", "Sabadell", "Mostoles", "Santa Cruz de Tenerife", "Pamplona", "Almeria", "Donostia",
+  ],
+  "Italy": [
+    "Rome", "Milan", "Naples", "Turin", "Palermo", "Genoa", "Bologna", "Florence",
+    "Bari", "Catania", "Venice", "Verona", "Messina", "Padua", "Trieste", "Brescia",
+    "Taranto", "Prato", "Reggio Calabria", "Modena", "Parma", "Reggio Emilia", "Perugia",
+    "Livorno", "Ravenna", "Cagliari", "Foggia", "Rimini", "Salerno", "Ferrara", "Sassari",
+  ],
+  "South Africa": [
+    "Johannesburg", "Cape Town", "Durban", "Pretoria", "Port Elizabeth", "Bloemfontein", "East London",
+    "Nelspruit", "Kimberley", "Polokwane", "Rustenburg", "Pietermaritzburg", "Soweto", "Benoni",
+  ],
+  "Nigeria": [
+    "Lagos", "Kano", "Ibadan", "Abuja", "Port Harcourt", "Benin City", "Maiduguri", "Zaria",
+    "Aba", "Jos", "Ilorin", "Oyo", "Enugu", "Abeokuta", "Onitsha", "Warri", "Sokoto", "Calabar",
+  ],
+  "Egypt": [
+    "Cairo", "Alexandria", "Giza", "Shubra El Kheima", "Port Said", "Suez", "Luxor", "Mansoura",
+    "El Mahalla El Kubra", "Tanta", "Asyut", "Ismailia", "Faiyum", "Zagazig", "Aswan", "Damietta",
+  ],
+  "Saudi Arabia": [
+    "Riyadh", "Jeddah", "Mecca", "Medina", "Dammam", "Khobar", "Taif", "Tabuk",
+    "Buraidah", "Khamis Mushait", "Abha", "Najran", "Yanbu", "Al Hufuf", "Jubail", "Hafar Al Batin",
+  ],
+  "Israel": [
+    "Tel Aviv", "Jerusalem", "Haifa", "Rishon LeZion", "Petah Tikva", "Ashdod", "Netanya", "Beer Sheva",
+    "Holon", "Bnei Brak", "Ramat Gan", "Ashkelon", "Rehovot", "Bat Yam", "Herzliya", "Kfar Saba",
+  ],
+  "Turkey": [
+    "Istanbul", "Ankara", "Izmir", "Bursa", "Antalya", "Adana", "Gaziantep", "Konya",
+    "Mersin", "Diyarbakir", "Kayseri", "Eskisehir", "Samsun", "Denizli", "Sanliurfa", "Malatya",
+  ],
+  "Russia": [
+    "Moscow", "Saint Petersburg", "Novosibirsk", "Yekaterinburg", "Kazan", "Nizhny Novgorod",
+    "Chelyabinsk", "Samara", "Omsk", "Rostov-on-Don", "Ufa", "Krasnoyarsk", "Voronezh", "Perm",
+    "Volgograd", "Krasnodar", "Saratov", "Tyumen", "Tolyatti", "Izhevsk", "Barnaul", "Ulyanovsk",
+  ],
+  "Poland": [
+    "Warsaw", "Krakow", "Lodz", "Wroclaw", "Poznan", "Gdansk", "Szczecin", "Bydgoszcz",
+    "Lublin", "Bialystok", "Katowice", "Gdynia", "Czestochowa", "Radom", "Sosnowiec", "Torun",
+  ],
+  "Thailand": [
+    "Bangkok", "Nonthaburi", "Nakhon Ratchasima", "Chiang Mai", "Hat Yai", "Udon Thani", "Pak Kret",
+    "Khon Kaen", "Chaophraya Surasak", "Phuket", "Pattaya", "Surat Thani", "Chiang Rai", "Nakhon Si Thammarat",
+  ],
+  "Vietnam": [
+    "Ho Chi Minh City", "Hanoi", "Da Nang", "Hai Phong", "Can Tho", "Bien Hoa", "Hue",
+    "Nha Trang", "Buon Ma Thuot", "Quy Nhon", "Vung Tau", "Nam Dinh", "Phan Thiet", "Long Xuyen",
+  ],
+  "Indonesia": [
+    "Jakarta", "Surabaya", "Bandung", "Medan", "Semarang", "Makassar", "Palembang", "Tangerang",
+    "Depok", "Bekasi", "Padang", "Denpasar", "Malang", "Samarinda", "Batam", "Banjarmasin",
+  ],
+  "Malaysia": [
+    "Kuala Lumpur", "George Town", "Johor Bahru", "Ipoh", "Shah Alam", "Petaling Jaya", "Kuching",
+    "Kota Kinabalu", "Kuantan", "Melaka", "Miri", "Alor Setar", "Sandakan", "Seremban", "Klang",
+  ],
+  "Philippines": [
+    "Manila", "Quezon City", "Davao City", "Caloocan", "Cebu City", "Zamboanga City", "Taguig",
+    "Pasig", "Antipolo", "Cagayan de Oro", "Paranaque", "Dasmarinas", "Valenzuela", "Bacoor",
+  ],
+  "Argentina": [
+    "Buenos Aires", "Cordoba", "Rosario", "Mendoza", "Tucuman", "La Plata", "Mar del Plata",
+    "Salta", "Santa Fe", "San Juan", "Resistencia", "Neuquen", "Santiago del Estero", "Corrientes",
+  ],
+  "Colombia": [
+    "Bogota", "Medellin", "Cali", "Barranquilla", "Cartagena", "Cucuta", "Bucaramanga", "Pereira",
+    "Santa Marta", "Ibague", "Pasto", "Manizales", "Neiva", "Soledad", "Villavicencio", "Armenia",
+  ],
+  "Chile": [
+    "Santiago", "Valparaiso", "Concepcion", "La Serena", "Antofagasta", "Temuco", "Rancagua",
+    "Talca", "Arica", "Coquimbo", "Puerto Montt", "Iquique", "Chillan", "Osorno", "Valdivia",
+  ],
+  "Austria": [
+    "Vienna", "Graz", "Linz", "Salzburg", "Innsbruck", "Klagenfurt", "Villach", "Wels",
+    "Sankt Polten", "Dornbirn", "Wiener Neustadt", "Steyr", "Feldkirch", "Bregenz", "Leonding",
+  ],
+  "Belgium": [
+    "Brussels", "Antwerp", "Ghent", "Charleroi", "Liege", "Bruges", "Namur", "Leuven",
+    "Mons", "Mechelen", "Aalst", "La Louviere", "Kortrijk", "Hasselt", "Ostend", "Sint-Niklaas",
+  ],
+  "Portugal": [
+    "Lisbon", "Porto", "Vila Nova de Gaia", "Amadora", "Braga", "Funchal", "Coimbra", "Setubal",
+    "Almada", "Agualva-Cacem", "Queluz", "Leiria", "Viseu", "Evora", "Faro", "Guimaraes",
+  ],
+  "Denmark": [
+    "Copenhagen", "Aarhus", "Odense", "Aalborg", "Esbjerg", "Randers", "Kolding", "Horsens",
+    "Vejle", "Roskilde", "Herning", "Silkeborg", "Naestved", "Fredericia", "Viborg", "Holstebro",
+  ],
+  "Norway": [
+    "Oslo", "Bergen", "Trondheim", "Stavanger", "Drammen", "Fredrikstad", "Kristiansand", "Sandnes",
+    "Tromso", "Sarpsborg", "Skoyen", "Asker", "Aalesund", "Sandefjord", "Haugesund", "Tonsberg",
+  ],
+  "Finland": [
+    "Helsinki", "Espoo", "Tampere", "Vantaa", "Oulu", "Turku", "Jyvaskyla", "Lahti",
+    "Kuopio", "Pori", "Kouvola", "Joensuu", "Lappeenranta", "Hameenlinna", "Vaasa", "Rovaniemi",
+  ],
+  "Greece": [
+    "Athens", "Thessaloniki", "Patras", "Heraklion", "Larissa", "Volos", "Rhodes", "Ioannina",
+    "Chania", "Chalcis", "Agrinio", "Katerini", "Trikala", "Serres", "Lamia", "Alexandroupoli",
+  ],
+  "Czech Republic": [
+    "Prague", "Brno", "Ostrava", "Plzen", "Liberec", "Olomouc", "Ceske Budejovice", "Hradec Kralove",
+    "Usti nad Labem", "Pardubice", "Zlin", "Havirov", "Kladno", "Most", "Opava", "Frydek-Mistek",
+  ],
+  "Romania": [
+    "Bucharest", "Cluj-Napoca", "Timisoara", "Iasi", "Constanta", "Craiova", "Brasov", "Galati",
+    "Ploiesti", "Oradea", "Braila", "Arad", "Pitesti", "Sibiu", "Bacau", "Targu Mures",
+  ],
+  "Hungary": [
+    "Budapest", "Debrecen", "Szeged", "Miskolc", "Pecs", "Gyor", "Nyiregyhaza", "Kecskemet",
+    "Szekesfehervar", "Szombathely", "Szolnok", "Tatabanya", "Kaposvar", "Bekescsaba", "Erd", "Veszprem",
+  ],
 };
 
 const regulatoryDetails = [
@@ -242,8 +391,25 @@ export default function Compliance() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [expandedSection, setExpandedSection] = useState<number | null>(0);
   const [expandedCountry, setExpandedCountry] = useState<string | null>(null);
+  const [showAllCities, setShowAllCities] = useState(false);
 
   const totalCities = Object.values(jurisdictions).flat().length;
+  const totalCountries = Object.keys(jurisdictions).length;
+
+  const featuredCities = [
+    "New York City, USA",
+    "Los Angeles, USA",
+    "San Francisco, USA",
+    "Chicago, USA",
+    "Mumbai, India",
+    "Delhi, India",
+    "Bangalore, India",
+    "London, UK",
+    "Singapore",
+    "Tokyo, Japan",
+    "Sydney, Australia",
+    "Dubai, UAE",
+  ];
 
   return (
     <section id="compliance" className="py-20 bg-[#fafafa]">
@@ -259,7 +425,7 @@ export default function Compliance() {
             <span className="gradient-text">Compliance & Regulatory.</span>
           </h2>
           <p className="text-[#666] text-lg max-w-3xl mx-auto">
-            NGEK TECH maintains the highest standards of regulatory compliance across {totalCities}+ jurisdictions worldwide and ensures your business operates within all applicable legal frameworks.
+            NGEK TECH maintains the highest standards of regulatory compliance across {totalCities.toLocaleString()}+ cities in {totalCountries} countries worldwide and ensures your business operates within all applicable legal frameworks.
           </p>
         </motion.div>
 
@@ -295,26 +461,110 @@ export default function Compliance() {
           viewport={{ once: true }}
           className="bg-white rounded-3xl p-8 shadow-lg border border-[#e5e5e5] mb-8"
         >
-          <div className="flex items-center gap-3 mb-6">
-            <Globe size={28} className="text-[#ff6b00]" />
-            <h3 className="text-xl font-bold text-[#1a1a1a]">Global Jurisdiction Coverage.</h3>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <Globe size={28} className="text-[#ff6b00]" />
+              <div>
+                <h3 className="text-xl font-bold text-[#1a1a1a]">Global Jurisdiction Coverage.</h3>
+                <p className="text-sm text-[#666]">{totalCities.toLocaleString()} cities across {totalCountries} countries.</p>
+              </div>
+            </div>
+            <div className="hidden md:flex items-center gap-2 text-sm text-[#ff6b00] font-medium">
+              <MapPin size={16} />
+              Worldwide Coverage
+            </div>
           </div>
+
           <p className="text-[#666] mb-6">
-            NGEK TECH is fully compliant with all local and global laws, regulations, and industry standards across major jurisdictions including but not limited to:
+            NGEK TECH is fully compliant with all local and global laws, regulations, and industry standards across major jurisdictions including:
           </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            {["California, USA", "Texas, USA", "Mumbai, India", "Delhi, India", "London, UK", "Singapore", "Tokyo, Japan", "Sydney, Australia"].map(
-              (city) => (
-                <div key={city} className="flex items-center gap-2 text-sm text-[#333]">
-                  <CheckCircle size={16} className="text-green-500 flex-shrink-0" />
-                  <span>{city}</span>
-                </div>
-              )
-            )}
+
+          {/* Featured Cities Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-6">
+            {featuredCities.map((city) => (
+              <div key={city} className="flex items-center gap-2 text-sm text-[#333] bg-[#f5f5f5] px-3 py-2 rounded-lg">
+                <CheckCircle size={14} className="text-green-500 flex-shrink-0" />
+                <span className="truncate">{city}</span>
+              </div>
+            ))}
           </div>
-          <p className="text-sm text-[#666] italic">
-            + {totalCities - 8} more cities across {Object.keys(jurisdictions).length} countries.
-          </p>
+
+          {/* Show All Cities Dropdown */}
+          <div className="border-t border-[#e5e5e5] pt-4">
+            <button
+              onClick={() => setShowAllCities(!showAllCities)}
+              className="w-full flex items-center justify-between px-4 py-3 bg-[#fafafa] rounded-xl hover:bg-[#f0f0f0] transition-colors"
+            >
+              <span className="font-medium text-[#1a1a1a]">
+                View All {totalCities.toLocaleString()} Cities in {totalCountries} Countries
+              </span>
+              {showAllCities ? (
+                <ChevronUp size={20} className="text-[#666]" />
+              ) : (
+                <ChevronDown size={20} className="text-[#666]" />
+              )}
+            </button>
+
+            <AnimatePresence>
+              {showAllCities && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="mt-4 max-h-96 overflow-y-auto space-y-2 pr-2">
+                    {Object.entries(jurisdictions).map(([country, cities]) => (
+                      <div key={country} className="border border-[#e5e5e5] rounded-xl overflow-hidden">
+                        <button
+                          onClick={() => setExpandedCountry(expandedCountry === country ? null : country)}
+                          className="w-full px-4 py-3 flex items-center justify-between bg-white hover:bg-[#fafafa] transition-colors"
+                        >
+                          <div className="flex items-center gap-3">
+                            <CheckCircle size={16} className="text-green-500" />
+                            <span className="font-medium text-[#1a1a1a] text-sm">{country}</span>
+                            <span className="text-xs text-[#666] bg-[#f5f5f5] px-2 py-0.5 rounded-full">
+                              {cities.length} cities
+                            </span>
+                          </div>
+                          {expandedCountry === country ? (
+                            <ChevronUp size={16} className="text-[#666]" />
+                          ) : (
+                            <ChevronDown size={16} className="text-[#666]" />
+                          )}
+                        </button>
+                        <AnimatePresence>
+                          {expandedCountry === country && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="overflow-hidden"
+                            >
+                              <div className="px-4 py-3 bg-[#fafafa] border-t border-[#e5e5e5]">
+                                <div className="flex flex-wrap gap-2">
+                                  {cities.map((city) => (
+                                    <span
+                                      key={city}
+                                      className="inline-flex items-center gap-1 text-xs text-[#333] bg-white px-2 py-1 rounded-lg border border-[#e5e5e5]"
+                                    >
+                                      {city}
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </motion.div>
 
         {/* CTA Button */}
@@ -360,7 +610,7 @@ export default function Compliance() {
                   <Shield size={28} className="text-white" />
                   <div>
                     <h2 className="text-xl font-bold text-white">FRC (Full Regulatory & Compliance) Details.</h2>
-                    <p className="text-white/80 text-sm">NGEK TECH Compliance Documentation.</p>
+                    <p className="text-white/80 text-sm">{totalCities.toLocaleString()} cities | {totalCountries} countries | 6 certifications.</p>
                   </div>
                 </div>
                 <button
@@ -458,66 +708,10 @@ export default function Compliance() {
                   </div>
                 </div>
 
-                {/* Jurisdiction Coverage */}
-                <div className="mb-8">
-                  <h3 className="text-lg font-bold text-[#1a1a1a] mb-4 flex items-center gap-2">
-                    <Globe size={20} className="text-[#ff6b00]" />
-                    Complete Jurisdiction Coverage ({totalCities}+ Cities).
-                  </h3>
-                  <div className="space-y-2">
-                    {Object.entries(jurisdictions).map(([country, cities]) => (
-                      <div key={country} className="border border-[#e5e5e5] rounded-xl overflow-hidden">
-                        <button
-                          onClick={() => setExpandedCountry(expandedCountry === country ? null : country)}
-                          className="w-full px-4 py-3 flex items-center justify-between bg-white hover:bg-[#fafafa] transition-colors"
-                        >
-                          <div className="flex items-center gap-3">
-                            <CheckCircle size={16} className="text-green-500" />
-                            <span className="font-medium text-[#1a1a1a]">{country}</span>
-                            <span className="text-xs text-[#666] bg-[#f5f5f5] px-2 py-0.5 rounded-full">
-                              {cities.length} {cities.length === 1 ? "jurisdiction" : "jurisdictions"}
-                            </span>
-                          </div>
-                          {expandedCountry === country ? (
-                            <ChevronUp size={18} className="text-[#666]" />
-                          ) : (
-                            <ChevronDown size={18} className="text-[#666]" />
-                          )}
-                        </button>
-                        <AnimatePresence>
-                          {expandedCountry === country && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.2 }}
-                              className="overflow-hidden"
-                            >
-                              <div className="px-4 py-3 bg-[#fafafa] border-t border-[#e5e5e5]">
-                                <div className="flex flex-wrap gap-2">
-                                  {cities.map((city) => (
-                                    <span
-                                      key={city}
-                                      className="inline-flex items-center gap-1 text-xs text-[#333] bg-white px-2 py-1 rounded-lg border border-[#e5e5e5]"
-                                    >
-                                      <CheckCircle size={10} className="text-green-500" />
-                                      {city}
-                                    </span>
-                                  ))}
-                                </div>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
                 {/* Footer Note */}
                 <div className="bg-[#fff5eb] rounded-xl p-4 border-l-4 border-[#ff6b00]">
                   <p className="text-sm text-[#666]">
-                    <strong className="text-[#1a1a1a]">Compliance Guarantee:</strong> NGEK TECH continuously monitors regulatory changes across all operating jurisdictions. Our legal and compliance teams ensure that all services remain compliant with evolving local and international regulations. For specific compliance inquiries, please contact{" "}
+                    <strong className="text-[#1a1a1a]">Compliance Guarantee:</strong> NGEK TECH continuously monitors regulatory changes across all {totalCountries} operating jurisdictions and {totalCities.toLocaleString()}+ cities. Our legal and compliance teams ensure that all services remain compliant with evolving local and international regulations. For specific compliance inquiries, please contact{" "}
                     <a href="mailto:contact.adityapatange@gmail.com" className="text-[#ff6b00] hover:underline">
                       contact.adityapatange@gmail.com
                     </a>
@@ -525,54 +719,10 @@ export default function Compliance() {
                   </p>
                 </div>
 
-                {/* Acronym Reference */}
-                <div className="mt-6 bg-[#f5f5f5] rounded-xl p-4">
-                  <h4 className="font-semibold text-[#1a1a1a] mb-3 text-sm">Acronym Reference Guide.</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-[#666]">
-                    <div><strong>ADA</strong> - Americans with Disabilities Act</div>
-                    <div><strong>AI</strong> - Artificial Intelligence</div>
-                    <div><strong>AML</strong> - Anti-Money Laundering</div>
-                    <div><strong>APPs</strong> - Australian Privacy Principles</div>
-                    <div><strong>ASVS</strong> - Application Security Verification Standard</div>
-                    <div><strong>CCPA</strong> - California Consumer Privacy Act</div>
-                    <div><strong>CIS</strong> - Center for Internet Security</div>
-                    <div><strong>DPIA</strong> - Data Protection Impact Assessment</div>
-                    <div><strong>EAR</strong> - Export Administration Regulations</div>
-                    <div><strong>ESG</strong> - Environmental, Social, and Governance</div>
-                    <div><strong>EU</strong> - European Union</div>
-                    <div><strong>FCPA</strong> - Foreign Corrupt Practices Act</div>
-                    <div><strong>FedRAMP</strong> - Federal Risk and Authorization Management Program</div>
-                    <div><strong>FERPA</strong> - Family Educational Rights and Privacy Act</div>
-                    <div><strong>FRC</strong> - Full Regulatory & Compliance</div>
-                    <div><strong>GDPR</strong> - General Data Protection Regulation</div>
-                    <div><strong>GLBA</strong> - Gramm-Leach-Bliley Act</div>
-                    <div><strong>HIPAA</strong> - Health Insurance Portability and Accountability Act</div>
-                    <div><strong>ICT</strong> - Information and Communications Technology</div>
-                    <div><strong>ISO</strong> - International Organization for Standardization</div>
-                    <div><strong>ISMS</strong> - Information Security Management System</div>
-                    <div><strong>ITAR</strong> - International Traffic in Arms Regulations</div>
-                    <div><strong>KYC</strong> - Know Your Customer</div>
-                    <div><strong>LGPD</strong> - Lei Geral de Proteção de Dados (General Data Protection Law)</div>
-                    <div><strong>NIST</strong> - National Institute of Standards and Technology</div>
-                    <div><strong>OWASP</strong> - Open Web Application Security Project</div>
-                    <div><strong>PCI DSS</strong> - Payment Card Industry Data Security Standard</div>
-                    <div><strong>PDPA</strong> - Personal Data Protection Act</div>
-                    <div><strong>SAR</strong> - Special Administrative Region</div>
-                    <div><strong>SDGs</strong> - Sustainable Development Goals</div>
-                    <div><strong>SOC</strong> - Service Organization Control</div>
-                    <div><strong>SOX</strong> - Sarbanes-Oxley Act</div>
-                    <div><strong>UAE</strong> - United Arab Emirates</div>
-                    <div><strong>UK</strong> - United Kingdom</div>
-                    <div><strong>UN</strong> - United Nations</div>
-                    <div><strong>USA</strong> - United States of America</div>
-                    <div><strong>WCAG</strong> - Web Content Accessibility Guidelines</div>
-                  </div>
-                </div>
-
                 {/* Last Updated */}
                 <div className="mt-6 text-center text-xs text-[#999]">
                   <p>Last Updated: December 19, 2025.</p>
-                  <p>Document Version: FRC-2025.12.001.</p>
+                  <p>Document Version: FRC-2025.12.002.</p>
                 </div>
               </div>
             </motion.div>
