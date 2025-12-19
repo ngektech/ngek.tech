@@ -1,5 +1,6 @@
 // ASI Academics Quiz Types
 
+// Original skill categories for question generation.
 export type SkillCategory =
   | "Technical Understanding"
   | "Ethical Reasoning"
@@ -20,6 +21,55 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
   "Governance Knowledge",
   "Future Implications",
 ];
+
+// Multi-dimensional evaluation fields for holistic ASI assessment.
+export type EvaluationField =
+  | "Philosophy"
+  | "Art"
+  | "Science"
+  | "Biology"
+  | "Cybernetics"
+  | "SciFi"
+  | "Computer Science"
+  | "Mysticism"
+  | "Policy"
+  | "Yoga"
+  | "Mindfulness"
+  | "Data Engineering";
+
+export const EVALUATION_FIELDS: EvaluationField[] = [
+  "Philosophy",
+  "Art",
+  "Science",
+  "Biology",
+  "Cybernetics",
+  "SciFi",
+  "Computer Science",
+  "Mysticism",
+  "Policy",
+  "Yoga",
+  "Mindfulness",
+  "Data Engineering",
+];
+
+// Field score from multi-step reasoning.
+export interface FieldScore {
+  field: EvaluationField;
+  score: number; // 1-10
+  reasoning: string;
+}
+
+// Enhanced question score with field breakdown.
+export interface EnhancedQuestionScore {
+  questionId: number;
+  initialScore: number; // First pass score
+  adjustedScore: number; // Second pass (let-through) score
+  finalScore: number; // Average of both passes
+  feedback: string;
+  skillCategory: SkillCategory;
+  fieldScores: FieldScore[]; // Scores across all 12 fields
+  compositeFieldScore: number; // Average of all field scores
+}
 
 export interface Question {
   id: number;
@@ -92,8 +142,11 @@ export interface EvaluateAnswersRequest {
 export interface EvaluateAnswersResponse {
   success: boolean;
   scores: QuestionScore[];
+  enhancedScores: EnhancedQuestionScore[];
   skillBreakdown: SkillScore[];
+  fieldBreakdown: FieldScore[]; // Aggregate field scores across all questions
   overallScore: number;
+  compositeScore: number; // Average of all 12 field scores
   certificateId: string;
   error?: string;
 }

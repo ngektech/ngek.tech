@@ -18,13 +18,15 @@ import {
   StyleSheet,
   pdf,
 } from "@react-pdf/renderer";
-import { SkillScore } from "@/lib/academics-types";
+import { SkillScore, FieldScore } from "@/lib/academics-types";
 
 interface QuizCertificateProps {
   certificateId: string;
   participantName: string;
   overallScore: number;
+  compositeScore?: number;
   skillBreakdown: SkillScore[];
+  fieldBreakdown?: FieldScore[];
   completedAt: Date;
   quizId: string;
 }
@@ -164,7 +166,9 @@ function CertificatePDF({
   certificateId,
   participantName,
   overallScore,
+  compositeScore,
   skillBreakdown,
+  fieldBreakdown,
   completedAt,
 }: QuizCertificateProps) {
   return (
@@ -184,17 +188,21 @@ function CertificatePDF({
 
           <Text style={pdfStyles.description}>
             has successfully completed the Artificial Superintelligence Knowledge Assessment
-            and demonstrated understanding of ASI concepts, safety, ethics, and governance.
+            with multi-dimensional evaluation across 12 interdisciplinary fields.
           </Text>
 
           <View style={pdfStyles.scoreSection}>
-            <Text style={pdfStyles.scoreLabel}>Overall Score</Text>
-            <Text style={pdfStyles.scoreValue}>{overallScore}%</Text>
+            <Text style={pdfStyles.scoreLabel}>Overall Score: {overallScore}% | Composite Field Score: {compositeScore || overallScore}%</Text>
           </View>
 
-          <Text style={pdfStyles.skillsTitle}>Skills Assessed</Text>
+          <Text style={pdfStyles.skillsTitle}>Interdisciplinary Fields Assessed</Text>
           <View style={pdfStyles.skillsContainer}>
-            {skillBreakdown.map((skill) => (
+            {fieldBreakdown && fieldBreakdown.length > 0 ? fieldBreakdown.map((field) => (
+              <View key={field.field} style={pdfStyles.skillRow}>
+                <Text style={pdfStyles.skillName}>{field.field}</Text>
+                <Text style={pdfStyles.skillScore}>{field.score}/10</Text>
+              </View>
+            )) : skillBreakdown.map((skill) => (
               <View key={skill.skill} style={pdfStyles.skillRow}>
                 <Text style={pdfStyles.skillName}>{skill.skill}</Text>
                 <Text style={pdfStyles.skillScore}>{skill.score}/10</Text>
@@ -241,7 +249,9 @@ export default function QuizCertificate(props: QuizCertificateProps) {
     certificateId,
     participantName,
     overallScore,
+    compositeScore,
     skillBreakdown,
+    fieldBreakdown,
     completedAt,
   } = props;
 
@@ -333,20 +343,26 @@ export default function QuizCertificate(props: QuizCertificateProps) {
         {/* Description */}
         <p className="text-center text-[#666] text-sm mb-6 max-w-lg mx-auto">
           has successfully completed the Artificial Superintelligence Knowledge Assessment
-          and demonstrated understanding of ASI concepts, safety, ethics, and governance.
+          with multi-dimensional evaluation across 12 interdisciplinary fields.
         </p>
 
         {/* Score */}
         <div className="text-center mb-6">
-          <p className="text-sm text-[#666] mb-1">Overall Score</p>
-          <p className="text-5xl font-bold gradient-text">{overallScore}%</p>
+          <p className="text-sm text-[#666] mb-1">Overall Score: {overallScore}% | Composite Field Score: {compositeScore || overallScore}%</p>
         </div>
 
-        {/* Skills */}
+        {/* Fields */}
         <div className="mb-6">
-          <p className="text-center font-bold text-[#1a1a1a] mb-4">Skills Assessed</p>
-          <div className="grid grid-cols-2 gap-x-8 gap-y-2 max-w-md mx-auto">
-            {skillBreakdown.map((skill) => (
+          <p className="text-center font-bold text-[#1a1a1a] mb-4">Interdisciplinary Fields Assessed</p>
+          <div className="grid grid-cols-3 gap-x-6 gap-y-2 max-w-xl mx-auto">
+            {fieldBreakdown && fieldBreakdown.length > 0 ? fieldBreakdown.map((field) => (
+              <div key={field.field} className="flex justify-between text-sm">
+                <span className="text-[#666]">{field.field}</span>
+                <span className={`font-bold ${getScoreColor(field.score)}`}>
+                  {field.score}/10
+                </span>
+              </div>
+            )) : skillBreakdown.map((skill) => (
               <div key={skill.skill} className="flex justify-between text-sm">
                 <span className="text-[#666]">{skill.skill}</span>
                 <span className={`font-bold ${getScoreColor(skill.score)}`}>

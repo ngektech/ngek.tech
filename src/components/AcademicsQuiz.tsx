@@ -18,6 +18,7 @@ import {
   Answer,
   QuestionScore,
   SkillScore,
+  FieldScore,
   GenerateQuestionsResponse,
   EvaluateAnswersResponse,
 } from "@/lib/academics-types";
@@ -34,7 +35,9 @@ export default function AcademicsQuiz() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [scores, setScores] = useState<QuestionScore[]>([]);
   const [skillBreakdown, setSkillBreakdown] = useState<SkillScore[]>([]);
+  const [fieldBreakdown, setFieldBreakdown] = useState<FieldScore[]>([]);
   const [overallScore, setOverallScore] = useState(0);
+  const [compositeScore, setCompositeScore] = useState(0);
   const [certificateId, setCertificateId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -120,7 +123,9 @@ export default function AcademicsQuiz() {
 
       setScores(data.scores);
       setSkillBreakdown(data.skillBreakdown);
+      setFieldBreakdown(data.fieldBreakdown || []);
       setOverallScore(data.overallScore);
+      setCompositeScore(data.compositeScore || data.overallScore);
       setCertificateId(data.certificateId);
       setStage("results");
     } catch (err) {
@@ -227,7 +232,7 @@ export default function AcademicsQuiz() {
               </div>
 
               {/* Info Cards */}
-              <div className="grid md:grid-cols-3 gap-4">
+              <div className="grid md:grid-cols-4 gap-4">
                 <div className="glass-effect rounded-xl p-4 text-center">
                   <div className="text-2xl font-bold text-[#ff6b00]">10</div>
                   <div className="text-sm text-[#666]">Questions</div>
@@ -237,8 +242,12 @@ export default function AcademicsQuiz() {
                   <div className="text-sm text-[#666]">Max chars per answer</div>
                 </div>
                 <div className="glass-effect rounded-xl p-4 text-center">
-                  <div className="text-2xl font-bold text-[#ff6b00]">8</div>
-                  <div className="text-sm text-[#666]">Skills assessed</div>
+                  <div className="text-2xl font-bold text-[#ff6b00]">12</div>
+                  <div className="text-sm text-[#666]">Fields evaluated</div>
+                </div>
+                <div className="glass-effect rounded-xl p-4 text-center">
+                  <div className="text-2xl font-bold text-[#ff6b00]">2</div>
+                  <div className="text-sm text-[#666]">AI evaluation passes</div>
                 </div>
               </div>
             </motion.div>
@@ -403,8 +412,12 @@ export default function AcademicsQuiz() {
               className="flex flex-col items-center justify-center py-20"
             >
               <Loader2 className="text-[#ff6b00] animate-spin mb-4" size={48} />
-              <p className="text-[#666]">Evaluating your answers with AI...</p>
-              <p className="text-sm text-[#999] mt-2">This may take a moment.</p>
+              <p className="text-[#666] font-medium">Multi-step AI Evaluation in Progress</p>
+              <div className="text-sm text-[#999] mt-3 text-center max-w-md">
+                <p>Pass 1: Evaluating across 12 interdisciplinary fields...</p>
+                <p className="mt-1">Pass 2: Let-through review for open-ended ASI thinking...</p>
+              </div>
+              <p className="text-xs text-[#999] mt-4">This may take up to 30 seconds.</p>
             </motion.div>
           )}
 
@@ -423,18 +436,72 @@ export default function AcademicsQuiz() {
                 <h2 className="text-2xl font-bold text-[#1a1a1a] mb-2">
                   Quiz Completed!
                 </h2>
-                <div className="text-6xl font-bold gradient-text mb-2">
-                  {overallScore}%
+                <div className="grid md:grid-cols-2 gap-6 mt-4">
+                  <div>
+                    <div className="text-5xl font-bold gradient-text mb-1">
+                      {overallScore}%
+                    </div>
+                    <p className="text-[#666] text-sm">
+                      Overall Score
+                    </p>
+                  </div>
+                  <div>
+                    <div className="text-5xl font-bold text-[#ff6b00] mb-1">
+                      {compositeScore}%
+                    </div>
+                    <p className="text-[#666] text-sm">
+                      Composite Field Score
+                    </p>
+                  </div>
                 </div>
-                <p className="text-[#666]">
-                  Overall Score
+                <p className="text-xs text-[#999] mt-4">
+                  Evaluated with 2-pass AI reasoning across 12 interdisciplinary fields
                 </p>
               </div>
+
+              {/* 12-Field Breakdown */}
+              {fieldBreakdown.length > 0 && (
+                <div className="glass-effect rounded-2xl p-6">
+                  <h3 className="text-lg font-bold text-[#1a1a1a] mb-2">
+                    Interdisciplinary Field Assessment
+                  </h3>
+                  <p className="text-xs text-[#999] mb-4">
+                    ASI knowledge evaluated across 12 fields of human understanding
+                  </p>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {fieldBreakdown.map((field, index) => (
+                      <motion.div
+                        key={field.field}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                      >
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-sm font-medium text-[#1a1a1a]">
+                            {field.field}
+                          </span>
+                          <span className={`text-sm font-bold ${getScoreColor(field.score)}`}>
+                            {field.score}/10
+                          </span>
+                        </div>
+                        <div className="h-2 bg-[#e5e5e5] rounded-full overflow-hidden">
+                          <motion.div
+                            className={`h-full ${getProgressBarColor(field.score)}`}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${field.score * 10}%` }}
+                            transition={{ duration: 0.5, delay: index * 0.05 }}
+                          />
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Skills Breakdown */}
               <div className="glass-effect rounded-2xl p-6">
                 <h3 className="text-lg font-bold text-[#1a1a1a] mb-4">
-                  Skills Assessment
+                  Question Category Assessment
                 </h3>
                 <div className="space-y-4">
                   {skillBreakdown.map((skill) => (
@@ -498,7 +565,9 @@ export default function AcademicsQuiz() {
                   certificateId={certificateId}
                   participantName={participantName}
                   overallScore={overallScore}
+                  compositeScore={compositeScore}
                   skillBreakdown={skillBreakdown}
+                  fieldBreakdown={fieldBreakdown}
                   completedAt={new Date()}
                   quizId={quizId || ""}
                 />
