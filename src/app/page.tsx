@@ -6,6 +6,7 @@ import VacuumDemo from "@/components/VacuumDemo";
 import About from "@/components/About";
 import Team from "@/components/Team";
 import Blog from "@/components/Blog";
+import Compliance from "@/components/Compliance";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
@@ -36,6 +37,9 @@ export default function Home() {
 
         {/* Blog Section */}
         <Blog />
+
+        {/* Compliance & Regulatory Section */}
+        <Compliance />
 
         {/* Contact Form */}
         <Contact />
