@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Home, Users, Info, Menu, X } from "lucide-react";
+import { Home, Users, Info, Menu, X, GraduationCap } from "lucide-react";
+import Link from "next/link";
 import Logo from "./Logo";
 
 const navItems = [
@@ -60,6 +61,16 @@ export default function Navbar() {
                 <span>{item.name}</span>
               </motion.a>
             ))}
+            <Link href="/academics" passHref legacyBehavior>
+              <motion.a
+                className="flex items-center space-x-2 px-4 py-2 rounded-full text-[#1a1a1a] hover:bg-[#fff5eb] transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <GraduationCap size={18} className="text-[#ff6b00]" />
+                <span>Academics.</span>
+              </motion.a>
+            </Link>
             <motion.a
               href="#contact"
               className="ml-4 px-6 py-2 gradient-bg text-white rounded-full font-medium"
@@ -111,6 +122,16 @@ export default function Navbar() {
                   <span>{item.name}</span>
                 </motion.a>
               ))}
+              <Link href="/academics" passHref legacyBehavior>
+                <motion.a
+                  className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-[#fff5eb] transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <GraduationCap size={20} className="text-[#ff6b00]" />
+                  <span>Academics.</span>
+                </motion.a>
+              </Link>
               <motion.a
                 href="#contact"
                 className="block text-center px-4 py-3 gradient-bg text-white rounded-lg font-medium"
