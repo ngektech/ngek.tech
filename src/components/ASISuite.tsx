@@ -10,7 +10,14 @@ import {
   CheckCircle,
   AlertCircle,
   Cpu,
+  X,
+  Lock,
+  Image,
+  Code,
+  MessageSquare,
+  BarChart3,
 } from "lucide-react";
+import { AnimatePresence } from "framer-motion";
 import {
   Document,
   Page,
@@ -146,20 +153,23 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     letterSpacing: 4,
     fontFamily: "Helvetica-Bold",
-    marginBottom: 8,
+    marginBottom: 12,
   },
   title: {
     fontSize: 22,
     fontFamily: "Times-Bold",
     color: "#1a1a1a",
     textAlign: "center",
-    marginBottom: 6,
+    marginBottom: 0,
+    lineHeight: 1.3,
   },
   subtitle: {
     fontSize: 11,
     color: "#666666",
     textAlign: "center",
-    marginBottom: 20,
+    marginTop: 10,
+    marginBottom: 25,
+    lineHeight: 1.4,
   },
   // Section Headings.
   heading: {
@@ -714,7 +724,69 @@ const PDFDocumentComponent = ({ document }: { document: PDFDocument }) => (
   </Document>
 );
 
+// ASI Suite Apps Configuration.
+interface ASIApp {
+  id: string;
+  name: string;
+  description: string;
+  icon: typeof FileText;
+  status: "active" | "coming_soon";
+  gradient: string;
+}
+
+const asiApps: ASIApp[] = [
+  {
+    id: "pdf-generator",
+    name: "PDF Generator",
+    description: "Generate professional invoices, contracts, reports, and documents instantly.",
+    icon: FileText,
+    status: "active",
+    gradient: "from-[#ff6b00] to-[#ff9500]",
+  },
+  {
+    id: "image-gen",
+    name: "Image Studio",
+    description: "AI-powered image generation and editing tools.",
+    icon: Image,
+    status: "coming_soon",
+    gradient: "from-[#8b5cf6] to-[#a855f7]",
+  },
+  {
+    id: "code-assist",
+    name: "Code Assistant",
+    description: "Intelligent code generation, review, and optimization.",
+    icon: Code,
+    status: "coming_soon",
+    gradient: "from-[#10b981] to-[#34d399]",
+  },
+  {
+    id: "chat-ai",
+    name: "Chat AI",
+    description: "Advanced conversational AI for customer support and more.",
+    icon: MessageSquare,
+    status: "coming_soon",
+    gradient: "from-[#3b82f6] to-[#60a5fa]",
+  },
+  {
+    id: "analytics",
+    name: "Data Analytics",
+    description: "AI-driven insights and business intelligence.",
+    icon: BarChart3,
+    status: "coming_soon",
+    gradient: "from-[#f59e0b] to-[#fbbf24]",
+  },
+  {
+    id: "secure-vault",
+    name: "Secure Vault",
+    description: "Encrypted document storage and management.",
+    icon: Lock,
+    status: "coming_soon",
+    gradient: "from-[#ef4444] to-[#f87171]",
+  },
+];
+
 export default function ASISuite() {
+  const [activeApp, setActiveApp] = useState<string | null>(null);
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -796,6 +868,14 @@ export default function ASISuite() {
     }
   };
 
+  const handleCloseApp = () => {
+    setActiveApp(null);
+    setPrompt("");
+    setError(null);
+    setSuccess(false);
+    setGeneratedDocument(null);
+  };
+
   const examplePrompts = [
     "Create a professional invoice for web development services, $5,000 total",
     "Generate a project proposal for a mobile app development",
@@ -804,189 +884,311 @@ export default function ASISuite() {
   ];
 
   return (
-    <section id="asi-suite" className="py-20 bg-gradient-to-b from-[#1a1a1a] to-[#2a2a2a]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#ff6b00]/10 rounded-full mb-6">
-            <Cpu size={18} className="text-[#ff6b00]" />
-            <span className="text-[#ff6b00] font-semibold text-sm">Artificial Super Intelligence.</span>
-          </div>
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            <span className="text-white">ASI</span>{" "}
-            <span className="gradient-text">Suite™</span>
-          </h2>
-          <p className="text-[#999] text-lg max-w-2xl mx-auto">
-            Enterprise-grade AI-powered tools for document generation, powered by NGEK TECH's Artificial Super Intelligence.
-          </p>
-        </motion.div>
+    <>
+      {/* Landing Page Section - Clean App Grid */}
+      <section id="asi-suite" className="py-20 bg-gradient-to-b from-[#1a1a1a] to-[#0f0f0f]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#ff6b00]/10 rounded-full mb-6 border border-[#ff6b00]/20">
+              <Cpu size={18} className="text-[#ff6b00]" />
+              <span className="text-[#ff6b00] font-semibold text-sm">Artificial Super Intelligence</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              <span className="text-white">ASI</span>{" "}
+              <span className="gradient-text">Suite™</span>
+            </h2>
+            <p className="text-[#888] text-lg max-w-2xl mx-auto">
+              Enterprise-grade AI-powered tools. Click on any app to launch.
+            </p>
+          </motion.div>
 
-        {/* PDF Generator Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="max-w-3xl mx-auto"
-        >
-          <div className="bg-[#2a2a2a] rounded-3xl border border-[#3a3a3a] overflow-hidden shadow-2xl">
-            {/* Card Header */}
-            <div className="bg-gradient-to-r from-[#ff6b00] to-[#ff9500] p-6">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                  <FileText size={24} className="text-white" />
+          {/* Apps Grid - Clean Rectangle Layout */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto"
+          >
+            {asiApps.map((app, index) => (
+              <motion.button
+                key={app.id}
+                onClick={() => app.status === "active" && setActiveApp(app.id)}
+                disabled={app.status === "coming_soon"}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                whileHover={app.status === "active" ? { scale: 1.02, y: -4 } : {}}
+                whileTap={app.status === "active" ? { scale: 0.98 } : {}}
+                className={`relative bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl p-6 text-left transition-all group ${
+                  app.status === "active"
+                    ? "hover:border-[#ff6b00]/50 hover:shadow-lg hover:shadow-[#ff6b00]/10 cursor-pointer"
+                    : "opacity-60 cursor-not-allowed"
+                }`}
+              >
+                {/* App Icon */}
+                <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${app.gradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                  <app.icon size={28} className="text-white" />
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white">PDF Generator.</h3>
-                  <p className="text-white/80 text-sm">Generate professional documents instantly.</p>
+
+                {/* App Name */}
+                <h3 className="text-white font-bold text-lg mb-2">{app.name}</h3>
+
+                {/* App Description */}
+                <p className="text-[#666] text-sm leading-relaxed">{app.description}</p>
+
+                {/* Status Badge */}
+                {app.status === "coming_soon" && (
+                  <div className="absolute top-4 right-4 px-2 py-1 bg-[#2a2a2a] rounded-full">
+                    <span className="text-[10px] text-[#666] font-medium uppercase tracking-wider">Coming Soon</span>
+                  </div>
+                )}
+
+                {/* Active Indicator */}
+                {app.status === "active" && (
+                  <div className="absolute top-4 right-4 w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                )}
+              </motion.button>
+            ))}
+          </motion.div>
+
+          {/* Footer */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center text-[#444] text-xs mt-12"
+          >
+            © {new Date().getFullYear()} NGEK TECH. All Rights Reserved. NGEK™ and ASI Suite™ are registered trademarks.
+          </motion.p>
+        </div>
+      </section>
+
+      {/* Full Screen App Modal */}
+      <AnimatePresence>
+        {activeApp === "pdf-generator" && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-[#0a0a0a]"
+          >
+            {/* App Header */}
+            <div className="bg-gradient-to-r from-[#ff6b00] to-[#ff9500] px-6 py-4">
+              <div className="max-w-4xl mx-auto flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                    <FileText size={20} className="text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-white font-bold text-xl">PDF Generator</h1>
+                    <p className="text-white/70 text-sm">ASI Suite™ by NGEK TECH</p>
+                  </div>
                 </div>
+                <button
+                  onClick={handleCloseApp}
+                  className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition-colors"
+                >
+                  <X size={20} className="text-white" />
+                </button>
               </div>
             </div>
 
-            {/* Card Body */}
-            <div className="p-6">
-              {/* Prompt Input */}
-              <div className="mb-6">
-                <label className="block text-white font-medium mb-2">
-                  Document Description.
-                </label>
-                <textarea
-                  value={prompt}
-                  onChange={(e) => setPrompt(e.target.value)}
-                  placeholder="Describe the document you want to generate. For example: 'Create an invoice for consulting services provided to Acme Corp, 40 hours at $150/hour, due in 30 days.'"
-                  className="w-full h-32 px-4 py-3 bg-[#1a1a1a] border border-[#3a3a3a] rounded-xl text-white placeholder-[#666] focus:outline-none focus:border-[#ff6b00] transition-colors resize-none"
-                  maxLength={5000}
-                />
-                <div className="flex justify-between mt-2">
-                  <span className="text-xs text-[#666]">
-                    Supports: Invoices, Contracts, Reports, Letters, Proposals, Certificates, and more.
-                  </span>
-                  <span className="text-xs text-[#666]">{prompt.length}/5000</span>
-                </div>
-              </div>
-
-              {/* Example Prompts */}
-              <div className="mb-6">
-                <p className="text-sm text-[#666] mb-2">Try an example:</p>
-                <div className="flex flex-wrap gap-2">
-                  {examplePrompts.map((example, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setPrompt(example)}
-                      className="px-3 py-1 text-xs bg-[#3a3a3a] text-[#999] rounded-full hover:bg-[#4a4a4a] hover:text-white transition-colors"
-                    >
-                      {example.length > 40 ? example.slice(0, 40) + "..." : example}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Error Message */}
-              {error && (
-                <div className="mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl">
-                  <p className="text-red-400 text-sm flex items-center gap-2">
-                    <AlertCircle size={16} />
-                    {error}
+            {/* App Content */}
+            <div className="overflow-y-auto h-[calc(100vh-72px)]">
+              <div className="max-w-4xl mx-auto px-6 py-8">
+                {/* App Title & Description */}
+                <div className="text-center mb-10">
+                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                    AI-Powered Document Generator
+                  </h2>
+                  <p className="text-[#888] text-lg max-w-2xl mx-auto leading-relaxed">
+                    Transform your ideas into professional, production-ready PDF documents in seconds.
+                    Powered by advanced AI to generate invoices, contracts, reports, proposals, certificates, and more.
                   </p>
+                  <div className="flex items-center justify-center gap-4 mt-6">
+                    <span className="px-3 py-1 bg-[#ff6b00]/10 text-[#ff6b00] text-sm font-medium rounded-full border border-[#ff6b00]/20">
+                      Enterprise Grade
+                    </span>
+                    <span className="px-3 py-1 bg-[#10b981]/10 text-[#10b981] text-sm font-medium rounded-full border border-[#10b981]/20">
+                      AI-Powered
+                    </span>
+                    <span className="px-3 py-1 bg-[#3b82f6]/10 text-[#3b82f6] text-sm font-medium rounded-full border border-[#3b82f6]/20">
+                      Instant Export
+                    </span>
+                  </div>
                 </div>
-              )}
 
-              {/* Success Message */}
-              {success && generatedDocument && (
-                <div className="mb-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl">
-                  <p className="text-green-400 text-sm flex items-center gap-2">
-                    <CheckCircle size={16} />
-                    Document generated successfully: "{generatedDocument.title}"
-                  </p>
+                {/* Prompt Section */}
+                <div className="bg-[#1a1a1a] rounded-2xl border border-[#2a2a2a] p-6 mb-6">
+                  <label className="block text-white font-semibold mb-3 text-lg">
+                    Document Description
+                  </label>
+                  <textarea
+                    value={prompt}
+                    onChange={(e) => setPrompt(e.target.value)}
+                    placeholder="Describe the document you want to generate. For example: 'Create an invoice for consulting services provided to Acme Corp, 40 hours at $150/hour, due in 30 days.'"
+                    className="w-full h-36 px-4 py-3 bg-[#0a0a0a] border border-[#2a2a2a] rounded-xl text-white placeholder-[#555] focus:outline-none focus:border-[#ff6b00] transition-colors resize-none text-base"
+                    maxLength={5000}
+                  />
+                  <div className="flex justify-between mt-3">
+                    <span className="text-sm text-[#555]">
+                      Supports: Invoices, Contracts, Reports, Letters, Proposals, Certificates
+                    </span>
+                    <span className="text-sm text-[#555]">{prompt.length}/5000</span>
+                  </div>
                 </div>
-              )}
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <motion.button
-                  onClick={handleGenerate}
-                  disabled={isGenerating || !prompt.trim()}
-                  className="flex-1 px-6 py-4 gradient-bg text-white rounded-xl font-semibold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                  whileHover={{ scale: isGenerating ? 1 : 1.02 }}
-                  whileTap={{ scale: isGenerating ? 1 : 0.98 }}
-                >
-                  {isGenerating ? (
-                    <>
-                      <Loader2 size={20} className="animate-spin" />
-                      Generating...
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles size={20} />
-                      Generate Document.
-                    </>
-                  )}
-                </motion.button>
+                {/* Example Prompts */}
+                <div className="mb-6">
+                  <p className="text-sm text-[#666] mb-3 font-medium">Quick Examples:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {examplePrompts.map((example, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setPrompt(example)}
+                        className="px-4 py-2 text-sm bg-[#1a1a1a] border border-[#2a2a2a] text-[#888] rounded-lg hover:bg-[#2a2a2a] hover:text-white hover:border-[#3a3a3a] transition-all"
+                      >
+                        {example.length > 45 ? example.slice(0, 45) + "..." : example}
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
-                {generatedDocument && (
+                {/* Error Message */}
+                {error && (
+                  <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl">
+                    <p className="text-red-400 text-sm flex items-center gap-2">
+                      <AlertCircle size={18} />
+                      {error}
+                    </p>
+                  </div>
+                )}
+
+                {/* Success Message */}
+                {success && generatedDocument && (
+                  <div className="mb-6 p-4 bg-green-500/10 border border-green-500/30 rounded-xl">
+                    <p className="text-green-400 text-sm flex items-center gap-2">
+                      <CheckCircle size={18} />
+                      Document generated successfully: &quot;{generatedDocument.title}&quot;
+                    </p>
+                  </div>
+                )}
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4">
                   <motion.button
-                    onClick={handleDownload}
-                    disabled={isDownloading}
-                    className="flex-1 px-6 py-4 bg-white text-[#1a1a1a] rounded-xl font-semibold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                    whileHover={{ scale: isDownloading ? 1 : 1.02 }}
-                    whileTap={{ scale: isDownloading ? 1 : 0.98 }}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    onClick={handleGenerate}
+                    disabled={isGenerating || !prompt.trim()}
+                    className="flex-1 px-8 py-4 bg-gradient-to-r from-[#ff6b00] to-[#ff9500] text-white rounded-xl font-bold text-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#ff6b00]/20"
+                    whileHover={{ scale: isGenerating ? 1 : 1.02 }}
+                    whileTap={{ scale: isGenerating ? 1 : 0.98 }}
                   >
-                    {isDownloading ? (
+                    {isGenerating ? (
                       <>
-                        <Loader2 size={20} className="animate-spin" />
-                        Preparing...
+                        <Loader2 size={22} className="animate-spin" />
+                        Generating...
                       </>
                     ) : (
                       <>
-                        <Download size={20} />
-                        Download PDF.
+                        <Sparkles size={22} />
+                        Generate Document
                       </>
                     )}
                   </motion.button>
-                )}
+
+                  {generatedDocument && (
+                    <motion.button
+                      onClick={handleDownload}
+                      disabled={isDownloading}
+                      className="flex-1 px-8 py-4 bg-white text-[#1a1a1a] rounded-xl font-bold text-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                      whileHover={{ scale: isDownloading ? 1 : 1.02 }}
+                      whileTap={{ scale: isDownloading ? 1 : 0.98 }}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
+                      {isDownloading ? (
+                        <>
+                          <Loader2 size={22} className="animate-spin" />
+                          Preparing...
+                        </>
+                      ) : (
+                        <>
+                          <Download size={22} />
+                          Download PDF
+                        </>
+                      )}
+                    </motion.button>
+                  )}
+                </div>
+
+                {/* Features Grid */}
+                <div className="mt-12 grid grid-cols-3 gap-6">
+                  {[
+                    { icon: FileText, title: "Multiple Formats", desc: "Invoices, contracts, reports" },
+                    { icon: Sparkles, title: "AI-Powered", desc: "Intelligent generation" },
+                    { icon: Download, title: "Instant Download", desc: "Production-ready PDFs" },
+                  ].map((feature, index) => (
+                    <div key={index} className="text-center p-4 bg-[#1a1a1a] rounded-xl border border-[#2a2a2a]">
+                      <div className="w-10 h-10 bg-[#ff6b00]/10 rounded-lg mx-auto mb-3 flex items-center justify-center">
+                        <feature.icon size={20} className="text-[#ff6b00]" />
+                      </div>
+                      <h4 className="text-white font-semibold text-sm mb-1">{feature.title}</h4>
+                      <p className="text-[#555] text-xs">{feature.desc}</p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Footer */}
+                <div className="mt-16 pt-8 border-t border-[#2a2a2a]">
+                  {/* Footer Logo & Branding */}
+                  <div className="text-center mb-6">
+                    <div className="inline-flex items-center gap-2 mb-3">
+                      <span className="text-2xl font-bold text-[#ff6b00]">NGEK</span>
+                      <span className="text-[#666] text-xs align-super">™</span>
+                    </div>
+                    <p className="text-[#555] text-sm">
+                      ASI Suite™ — Enterprise AI Solutions
+                    </p>
+                  </div>
+
+                  {/* Footer Links */}
+                  <div className="flex justify-center gap-8 text-xs text-[#444] mb-6">
+                    <a href="/terms" className="hover:text-[#ff6b00] transition-colors">Terms of Service</a>
+                    <a href="/privacy" className="hover:text-[#ff6b00] transition-colors">Privacy Policy</a>
+                    <a href="#contact" onClick={handleCloseApp} className="hover:text-[#ff6b00] transition-colors">Contact</a>
+                  </div>
+
+                  {/* Copyright & Legal */}
+                  <div className="text-center space-y-2">
+                    <p className="text-[#444] text-xs">
+                      © {new Date().getFullYear()} NGEK TECH. All Rights Reserved.
+                    </p>
+                    <p className="text-[#333] text-[10px]">
+                      NGEK™, ASI Suite™, and the NGEK logo are registered trademarks of NGEK TECH.
+                    </p>
+                    <p className="text-[#333] text-[10px]">
+                      This application and its contents are protected by international copyright and trademark laws.
+                    </p>
+                    <p className="text-[#333] text-[10px] mt-4">
+                      Powered by Artificial Super Intelligence • Made with innovation in mind
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
-
-            {/* Card Footer */}
-            <div className="px-6 py-4 bg-[#1a1a1a] border-t border-[#3a3a3a]">
-              <p className="text-xs text-[#666] text-center">
-                © {new Date().getFullYear()} NGEK TECH. All Rights Reserved. NGEK™ and ASI Suite™ are registered trademarks of NGEK TECH.
-              </p>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Features */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto"
-        >
-          {[
-            { icon: FileText, title: "Multiple Formats", desc: "Invoices, contracts, reports, and more." },
-            { icon: Sparkles, title: "AI-Powered", desc: "Intelligent content generation." },
-            { icon: Download, title: "Instant Download", desc: "Production-ready PDFs." },
-          ].map((feature, index) => (
-            <div key={index} className="text-center">
-              <div className="w-12 h-12 bg-[#ff6b00]/10 rounded-xl mx-auto mb-3 flex items-center justify-center">
-                <feature.icon size={24} className="text-[#ff6b00]" />
-              </div>
-              <h4 className="text-white font-semibold mb-1">{feature.title}</h4>
-              <p className="text-[#666] text-sm">{feature.desc}</p>
-            </div>
-          ))}
-        </motion.div>
-      </div>
-    </section>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
