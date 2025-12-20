@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BookOpen, Clock, ArrowRight, Code, Timer, Heart, Atom, Wifi, Layers, Music, Terminal, Brain, Blocks, Sparkles, Globe } from "lucide-react";
+import { BookOpen, Clock, ArrowRight, Code, Timer, Heart, Atom, Wifi, Layers, Music, Terminal, Brain, Blocks, Sparkles, Globe, VolumeX, Zap } from "lucide-react";
 
 const blogPosts = [
   {
@@ -101,6 +101,22 @@ const blogPosts = [
     icon: Globe,
     readTime: "15 min read.",
     category: "Career.",
+  },
+  {
+    slug: "the-build-of-silence-python-version",
+    title: "The Build Of Silence (Python Version).",
+    excerpt: "Where code meets consciousness—silent computation and the elegance of minimal expression in Python.",
+    icon: VolumeX,
+    readTime: "16 min read.",
+    category: "Philosophy.",
+  },
+  {
+    slug: "knowledge-generator-kg-programming-freestyles",
+    title: "Knowledge Generator (KG) as Programming Freestyles.",
+    excerpt: "The art of spontaneous code composition—algorithmic intuition meets creative flow in real-time knowledge synthesis.",
+    icon: Zap,
+    readTime: "18 min read.",
+    category: "Creativity.",
   },
 ];
 
